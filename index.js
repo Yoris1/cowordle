@@ -71,7 +71,19 @@ create_wordlists();
 function get_random_word(len) {
 	return word_lists[len][Math.floor( Math.random() * word_lists[len].length )];
 }
-
+function compare_guess(guess, word) {
+	var res = "";
+	for(var i = 0; i < guess.length; i++) {
+		if(guess[i] == word[i]) {
+			res += "Y";
+		} else if (word.includes(guess[i])) {
+			res += "M";
+		} else {
+			res += "N";
+		}
+	}
+	return res;
+}
 const allowed_guess_letters = /^[\u0041-\u005a]*$/; 
 // ascii A-Z caps letters.
 
@@ -123,8 +135,9 @@ io.on('connection', client => {
 		if(guess.length != games[client.room].guess_length) return;
 		if(!allowed_guess_letters.test(guess))
 			return;
+		if(games[client.room].started == false) return;
 
-
+		guess = compare_guess(guess, games[client.room].word);
 		console.log(`Player ${client.id} from room ${client.room} submitted a guess ${guess}`);
 		games[client.room].players.forEach(player_socket => {
 			player_socket.emit('guess', {'text': guess, 'playerid': client.nick}); // process guess to be emoji or Yes NO YES YES MAYBE NO type thing to not let others decode it easily
@@ -134,12 +147,12 @@ io.on('connection', client => {
 		if(client.room && games[client.room] && games[client.room].host && client.id) {
 			var game = games[client.room];
 			if(game.host == client.id && game.started == false) {
+				console.log(`Game ${client.room} started!`);
 				game.started = true;
-				game.word = get_random_word(game.guess_length);
+				game.word = get_random_word(game.guess_length).toUpperCase();
 			}
 		}
 	});
-
 });
 
 
