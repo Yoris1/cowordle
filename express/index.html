@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<title>Worlde</title>
+	<script src="/socket.io/socket.io.js"></script>
+	
+	<script>
+		var socket;
+		function createSocket(id) {
+			socket = io("http://localhost:8080");
+			socket.on('connect', function(data) {
+				socket.emit('join', {'id': id, 'nick': $('#nick').val()});
+			});
+			socket.on('guess', function(data) {
+				console.log(`${data.playerid} guessed ${data.text}`);
+			})
+			socket.on('add_player', function(player) {
+				var name = player.nick;
+				console.log(`Adding player ${name}`);
+				if(player.you == true)
+					name += " (YOU)"
+				$("<p>").text(name).appendTo('#playerlist');
+			});
+		}
+		function joinroom(join) {
+			$('#join_form').hide();
+			$('#roominfo').show();
+			$('#gameboard').show();
+			var value = $('#roomid').val();
+			$.ajax({
+				type: "POST",
+				url: "/room",
+				data: {'join' : join, 'roomid': value, word_len: 6},
+				dataType: "json",
+				success: function(result) {
+					console.log(result);
+					console.log("got response from room creation!");
+					$('#current_room_id').text(result.id);
+					createSocket(result.id);
+				}
+			});
+		}
+		$(document).ready(function(){
+            $('#create').click(function(event) {
+				event.preventDefault();
+				joinroom(false);
+			});
+			$('#join').click(function(event) {
+				event.preventDefault();
+				joinroom(true);
+			});
+			$('#startbtn').on('click', function() {
+				socket.emit('start');
+			});
+    	});
+		$(document).on("keypress", "input", function(e) {
+			if(e.which == 13) {
+				var input_value = $('#guess').val();
+				socket.emit('guess', input_value);
+			}
+		});
+
+	</script>
+</head>
+
+<body style="background-color: black; color: white;">
+	<h1 style="text-align: center; color: gray;">
+		Welcome to worlde!
+	</h1>
+	<h3 style="text-align: center; color: white;">
+		A copy of the smash hit game "wordle" invented by Josh Wardle that you can play with friends!</h3>
+	<div style="width: 24em; margin-left: auto; margin-right: auto;" id = "join_form">
+		<input type="text" placeholder="your name <3" id='nick' style="margin-left: auto; margin-right: auto; width: 50%; display: block;">
+		<br>
+		<button id="create">Create Room</button>
+		<b>OR</b>
+		<input type="text" placeholder="RoomID" id="roomid"> 
+		<button id="join">join</button>
+	</div>
+	<div id="roominfo" hidden = true>
+		<h1>Your room: <span id='current_room_id'>undefined</span></h1>
+	</div>
+	<div id="gameboard" hidden = true>
+		<input type="text" id='guess' placeholder="GUESS" >
+	</div>
+
+	<div id="playerlist" style="color: white;">
+	</div>
+	<button id='startbtn'>
+		start
+	</button>
+</body>
+
+</html>
