@@ -36,12 +36,12 @@ router.route('/room')
 				roomid = shortid.generate();
 				console.log(`Created a room for user ${req.sessionID}. Room id: ${roomid}`);
 				games[roomid] = {};
+				games[roomid].started = false;
 			}
 			games[roomid].guess_length = 5;
 			if(req.body.word_len) {
 				games[roomid].guess_length = +req.body.word_len;
 			}
-			games[roomid].started = false;
 			res.send({id: roomid});
 
 		}
@@ -133,6 +133,7 @@ io.on('connection', client => {
 	client.on('guess', function(guess) {
 		if(!guess) return;
 		if(guess.length != games[client.room].guess_length) return;
+		guess = guess.toUpperCase();
 		if(!allowed_guess_letters.test(guess))
 			return;
 		if(games[client.room].started == false) return;

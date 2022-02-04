@@ -34,7 +34,7 @@
 			$.ajax({
 				type: "POST",
 				url: "/room",
-				data: {'join' : join, 'roomid': value, word_len: 4},
+				data: {'join' : join, 'roomid': value, word_len: 5},
 				dataType: "json",
 				success: function(result) {
 					console.log(result);
@@ -59,12 +59,6 @@
 			create_grid('test', 5);
 			set_grid_text('test', 'smile');
     	});
-		$(document).on("keypress", "input", function(e) {
-			if(e.which == 13) {
-				var input_value = $('#guess').val();
-				socket.emit('guess', input_value);
-			}
-		});
 		$(document).on("keydown", "body", function(e) {
 			if(e.key == 'Backspace') {
 				user_word = user_word.slice(0, -1);
@@ -75,6 +69,7 @@
 		var user_word = "";
 		$(document).on("keypress", "body", function(e) {
 			if(e.key == 'Enter') {
+				socket.emit('guess', user_word);
 				guess ++;
 				user_word = '';
 				return;
@@ -158,7 +153,6 @@
 		<h1>Your room: <span id='current_room_id'>undefined</span></h1>
 	</div>
 	<div id="gameboard" hidden = true>
-		<input type="text" id='guess' placeholder="GUESS" >
 	</div>
 
 	<div id="playerlist" style="color: white;">
