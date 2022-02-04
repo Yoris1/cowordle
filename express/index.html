@@ -56,6 +56,8 @@
 			$('#startbtn').on('click', function() {
 				socket.emit('start');
 			});
+			create_grid('test', 5);
+			set_grid_text('test', 'smile');
     	});
 		$(document).on("keypress", "input", function(e) {
 			if(e.which == 13) {
@@ -63,8 +65,79 @@
 				socket.emit('guess', input_value);
 			}
 		});
+		$(document).on("keydown", "body", function(e) {
+			if(e.key == 'Backspace') {
+				user_word = user_word.slice(0, -1);
+				set_grid_text('test', guess, user_word);
+			}
+		});
+		var guess = 0;
+		var user_word = "";
+		$(document).on("keypress", "body", function(e) {
+			if(e.key == 'Enter') {
+				guess ++;
+				user_word = '';
+				return;
+			}
+			user_word += e.key;
+			user_word = user_word.slice(0, grids['test'].max)
+			set_grid_text('test', guess, user_word);
+		});
+
+		var grids = {}
+		function create_grid(id, dimensions) {
+			grids[id] = {};
+			grids[id].row = 0;
+			grids[id].char = 0;
+			grids[id].max = 5;
+			$(`<div class="grid" id=${id}>`).appendTo($("#gameboard"));
+			for(var i = 0; i < +dimensions; i++) {
+				row = $(`<div class=grid_row id='${id}_${i}'>`);
+				$(`#${id}`).append(row);
+				for(var j = 0; j < +dimensions; j++)
+					$(`<div class=grid_entry>`).appendTo(row);
+			}
+		}
+		function set_grid_text(id, row, word) {
+			var i = 0;
+			$(`#${id}_${row}`).children('div').each(function() {
+				if(word.length <= i) {
+					$(this).text(' ');
+				} else
+					$(this).text(word[i++]);
+			})
+		}
+		
 
 	</script>
+	<style>
+		@import url('https://fonts.googleapis.com/css2?family=Supermercado+One&display=swap');
+		.grid_entry {
+			margin-top: 5px;
+			margin-left: 5px;
+			border-radius: 10%;
+			border-color: rgb(172, 210, 162);
+			border-style: solid;
+			border-width: 2px;
+			width: 60px;
+			height: 60px;
+			display: inline-block;
+			font-family: 'Supermercado One';
+			font-size: 3em;
+			text-align: center;
+			vertical-align: middle;
+		}
+		.grid_good {
+			background-color: green;
+		}
+		.grid_bad {
+			background-color: red;
+		}
+		.grid_mid {
+			background-color: yellow;
+		}
+		
+	</style>
 </head>
 
 <body style="background-color: black; color: white;">
