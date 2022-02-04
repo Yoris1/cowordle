@@ -16,15 +16,21 @@
 				socket.emit('join', {'id': id, 'nick': $('#nick').val()});
 			});
 			socket.on('guess', function(data) {
-				console.log(`${data.playerid} guessed ${data.text}`);
+				console.log(`${data.nick} (${data.id}) guessed ${data.text} with guess id ${data.guess_id}`);
+				set_grid_text(data.id, data.guess_id, data.text);
 			})
 			socket.on('add_player', function(player) {
 				var name = player.nick;
 				console.log(`Adding player ${name}`);
 				if(player.you == true)
 					name += " (YOU)"
+				else
+					create_grid(player.id, 5);
 				$("<p>").text(name).appendTo('#playerlist');
 			});
+			socket.on('start', function(data) {
+				console.log(data);
+			})
 		}
 		function joinroom(join) {
 			$('#join_form').hide();
@@ -44,6 +50,7 @@
 				}
 			});
 		}
+
 		$(document).ready(function(){
             $('#create').click(function(event) {
 				event.preventDefault();
@@ -57,7 +64,6 @@
 				socket.emit('start');
 			});
 			create_grid('test', 5);
-			set_grid_text('test', 'smile');
     	});
 		$(document).on("keydown", "body", function(e) {
 			if(e.key == 'Backspace') {
@@ -92,6 +98,7 @@
 				for(var j = 0; j < +dimensions; j++)
 					$(`<div class=grid_entry>`).appendTo(row);
 			}
+
 		}
 		function set_grid_text(id, row, word) {
 			var i = 0;
@@ -107,6 +114,11 @@
 	</script>
 	<style>
 		@import url('https://fonts.googleapis.com/css2?family=Supermercado+One&display=swap');
+		.grid {
+			display: inline-block;
+			margin-left: 100px;
+			mergin-top: 100px;
+		}
 		.grid_entry {
 			margin-top: 5px;
 			margin-left: 5px;

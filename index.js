@@ -30,6 +30,10 @@ router.route('/room')
 			if(req.body.join == 'true' && req.body.roomid) {
 				roomid = req.body.roomid;
 				console.log(`User ${req.sessionID} requested to join a room ${roomid}!`);
+				if(!games[roomid]) {
+					games[roomid] = {};
+					games[roomid].started = false;
+				}
 			}
 			else {
 				console.log(`User ${req.sessionID} requested to create a room!`);
@@ -67,23 +71,10 @@ function create_wordlists() {
 	});
 }
 create_wordlists();
-
 function get_random_word(len) {
 	return word_lists[len][Math.floor( Math.random() * word_lists[len].length )];
 }
-function compare_guess(guess, word) {
-	var res = "";
-	for(var i = 0; i < guess.length; i++) {
-		if(guess[i] == word[i]) {
-			res += "Y";
-		} else if (word.includes(guess[i])) {
-			res += "M";
-		} else {
-			res += "N";
-		}
-	}
-	return res;
-}
+
 const allowed_guess_letters = /^[\u0041-\u005a]*$/; 
 // ascii A-Z caps letters.
 
@@ -91,6 +82,7 @@ var io = require('socket.io').listen(server);
 io.on('connection', client => {
 	console.log("client connected to socketio");
 	client.on('join', function(data) {
+		client.guesses = 0;
 		if(data && data.id && games[data.id]) {
 			var game_id = data.id;
 			var game = games[game_id];
@@ -138,12 +130,14 @@ io.on('connection', client => {
 			return;
 		if(games[client.room].started == false) return;
 
-		guess = compare_guess(guess, games[client.room].word);
 		console.log(`Player ${client.id} from room ${client.room} submitted a guess ${guess}`);
 		games[client.room].players.forEach(player_socket => {
-			player_socket.emit('guess', {'text': guess, 'playerid': client.nick}); // process guess to be emoji or Yes NO YES YES MAYBE NO type thing to not let others decode it easily
+			player_socket.emit('guess', {'text': guess.toLowerCase(), 'id': client.id, 'nick': client.nick, 'guess_id': client.guesses}); // process guess to be emoji or Yes NO YES YES MAYBE NO type thing to not let others decode it easily
 		});
+		
+		client.guesses++;
 	});
+
 	client.on('start', function() {
 		if(client.room && games[client.room] && games[client.room].host && client.id) {
 			var game = games[client.room];
@@ -151,6 +145,10 @@ io.on('connection', client => {
 				console.log(`Game ${client.room} started!`);
 				game.started = true;
 				game.word = get_random_word(game.guess_length).toUpperCase();
+
+				game.players.forEach(player => {
+					player.emit('start', {'word': game.word});
+				});
 			}
 		}
 	});
