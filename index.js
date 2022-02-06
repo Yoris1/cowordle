@@ -6,7 +6,7 @@ const shortid = require('shortid');
 games = {};
 
 const { uniqueNamesGenerator, adjectives, animals, colors } = require('unique-names-generator');
- 
+
 
 
 const app = express();
@@ -132,7 +132,7 @@ io.on('connection', client => {
 
 		console.log(`Player ${client.id} from room ${client.room} submitted a guess ${guess}`);
 		games[client.room].players.forEach(player_socket => {
-			player_socket.emit('guess', {'text': guess.toLowerCase(), 'id': client.id, 'nick': client.nick, 'guess_id': client.guesses}); // process guess to be emoji or Yes NO YES YES MAYBE NO type thing to not let others decode it easily
+			player_socket.emit('guess', {'text': guess.toLowerCase(), 'id': client.id, 'nick': client.nick, 'guess_id': client.guesses, 'correct': games[client.room].word}); // process guess to be emoji or Yes NO YES YES MAYBE NO type thing to not let others decode it easily
 		});
 		
 		client.guesses++;

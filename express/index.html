@@ -9,6 +9,21 @@
 	<script src="/socket.io/socket.io.js"></script>
 	
 	<script>
+		function compare(w, good) {
+			var res = "";
+			w = w.toLowerCase();
+			good = good.toLowerCase();
+			for(var i = 0; i < w.length; i++) {
+				if(w[i] == good[i]) 
+					res += "Y";
+				else if(good.includes(w[i]))
+					res+="M";
+				else
+					res += "N";
+			}
+			return res;
+		}
+		var is_started = false;
 		var socket;
 		function createSocket(id) {
 			socket = io("http://localhost:8080");
@@ -16,22 +31,30 @@
 				socket.emit('join', {'id': id, 'nick': $('#nick').val()});
 			});
 			socket.on('guess', function(data) {
-				console.log(`${data.nick} (${data.id}) guessed ${data.text} with guess id ${data.guess_id}`);
+				console.log(`${data.nick} (${data.id}) guessed ${data.text} with guess id ${data.guess_id}. correct: ${data.correct}`);
 				set_grid_text(data.id, data.guess_id, data.text);
+				if(data.id == my_id)
+					set_grid_colors('test', data.guess_id, compare(data.text, data.correct));
+				else
+					set_grid_colors(data.id, data.guess_id, compare(data.text, data.correct));
 			})
 			socket.on('add_player', function(player) {
 				var name = player.nick;
 				console.log(`Adding player ${name}`);
-				if(player.you == true)
+				if(player.you == true) {
 					name += " (YOU)"
+					my_id = player.id;
+				}
 				else
 					create_grid(player.id, 5);
 				$("<p>").text(name).appendTo('#playerlist');
 			});
 			socket.on('start', function(data) {
 				console.log(data);
+				is_started = true;
 			})
 		}
+		var my_id = "";
 		function joinroom(join) {
 			$('#join_form').hide();
 			$('#roominfo').show();
@@ -74,7 +97,9 @@
 		var guess = 0;
 		var user_word = "";
 		$(document).on("keypress", "body", function(e) {
+			if(!is_started) return;
 			if(e.key == 'Enter') {
+				if(user_word.length != 5) return;
 				socket.emit('guess', user_word);
 				guess ++;
 				user_word = '';
@@ -98,7 +123,27 @@
 				for(var j = 0; j < +dimensions; j++)
 					$(`<div class=grid_entry>`).appendTo(row);
 			}
-
+		}
+		function set_grid_colors(id, row, word) {
+			var i = 0;
+			console.log(`Doing switch statement for word ${word}`) ;
+			$(`#${id}_${row}`).children('div').each(function() {
+				var char =word[i++];
+				console.log(`Doing switch statement for character ${char}`) ;
+				switch(char){
+					case 'N':
+						$(this).addClass("grid_bad");
+						break;
+					case 'M':
+						$(this).addClass("grid_mid");
+						break;
+					case 'Y':
+						$(this).addClass("grid_good");
+						break;
+					default:
+						break;
+				}
+			})
 		}
 		function set_grid_text(id, row, word) {
 			var i = 0;
