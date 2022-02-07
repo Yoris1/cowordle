@@ -130,6 +130,8 @@ class Game {
 		this.user_wordlist.push("penis");
 		this.user_wordlist.push("sperm");
 		this.user_wordlist.push("cunts");
+		this.user_wordlist.push("cocks");
+		this.user_wordlist.push("cock");
 	}
 };
 class Player {
