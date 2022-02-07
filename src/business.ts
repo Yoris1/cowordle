@@ -25,12 +25,14 @@ class Game {
 
 	addPlayer(newPlayer: Player) : void {
 		if(newPlayer.playing) return; // broken : ) 
+		newPlayer.socket.emit('wordlist', this.user_wordlist);
 		this.players.forEach((element) => {
 			element.socket.emit('add_player', {
 				nick: newPlayer.nick,
 				you: false,
 				id: newPlayer.id,
 				host: this.host == newPlayer,
+				points: newPlayer.points
 			});
 		}); // send player to all other players
 		
@@ -42,14 +44,15 @@ class Game {
 			this.host = newPlayer;
 
 		if(this.isStarted == true)
-			newPlayer.socket.emit('start', { word: this.word, wordlist: this.user_wordlist }); // must emit this before sending guesses to not clear board
+			newPlayer.socket.emit('start', { word: this.word }); // must emit this before sending guesses to not clear board
 
 		this.players.forEach((element) => { // send other players to new players and all the guesses so far
 			newPlayer.socket.emit('add_player', {
 				nick: element.nick,
 				you: element == newPlayer,
 				id: element.id,
-				host: this.host == element
+				host: this.host == element,
+				points: element.points
 			});
 			for(var i = 0; i < element.guesses.length; i++) {
 				newPlayer.socket.emit('guess', {
@@ -69,6 +72,8 @@ class Game {
 		this.players.forEach(player => {
 			var latestPoints = this.maxGuesses- (player.guesses.length-1) ;
 			latestPoints *= 100;
+			if(player.guesses[player.guesses.length-1] != this.word) 
+				latestPoints = 0;
 			console.log(`Adding ${latestPoints} to player ${player.nick}`);
 			player.points += latestPoints;
 			playerPoints.push({
@@ -115,7 +120,7 @@ class Game {
 			this.rollWord()
 			this.isStarted = true;
 			this.players.forEach(element => {
-				element.socket.emit('start', { word: this.word, wordlist: this.user_wordlist }); 
+				element.socket.emit('start', { word: this.word}); 
 			});
 		}
 	}

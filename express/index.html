@@ -8,18 +8,24 @@
 	<title>Worlde</title>
 	<script src="/socket.io/socket.io.js"></script>
 	
-	<script>
+	<script>	
 		function compare(w, good) {
-			var res = "";
+			var res = ['N', 'N', 'N', 'N', 'N'];
 			w = w.toLowerCase();
 			good = good.toLowerCase();
-			for(var i = 0; i < w.length; i++) {
-				if(w[i] == good[i]) 
-					res += "Y";
-				else if(good.includes(w[i]))
-					res+="M";
-				else
-					res += "N";
+			for(var id = 0; id < w.length; id++) {
+				var letter = good[id];
+				for(var j = 0; j < w.length; j++) {
+					var id1 = id+j;
+					var id2 = id-j;
+					if( (w[id1] && w[id1] == letter) ) {
+						res[id1] = j==0?"Y":"M";
+						break;
+					} else if((w[id2] && w[id2] == letter)) {
+						res[id2] = j==0?"Y":"M";
+						break;
+					}
+				}
 			}
 			return res;
 		}
@@ -54,10 +60,9 @@
 					create_grid(player.id, 5);
 				$(`<p id="${player.id}-playerlist">`).appendTo(`#playerlist`);
 				$(`<span id="${player.id}-playerlist-name">`).text(name+" ").appendTo(`#${player.id}-playerlist`);
-				$(`<span id="${player.id}-playerlist-points">`).text('0').appendTo(`#${player.id}-playerlist`);
+				$(`<span id="${player.id}-playerlist-points">`).text(player.points).appendTo(`#${player.id}-playerlist`);
 			});
 			socket.on('start', function(data) {
-				wordlist = data.wordlist;
 				console.log(data);
 				console.log(wordlist);
 				console.log("STARTING!!");
@@ -73,6 +78,10 @@
 				})
 				// TODO RESET ALL BOARDS!!
 			})
+			socket.on('wordlist', function(data) {
+				console.log("Got wordlist!!");
+				wordlist = data;
+			});
 			socket.on('endround', points => {
 				console.log(points);
 				points.forEach(element => {
