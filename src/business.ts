@@ -14,6 +14,7 @@ class Game {
 	players :Player[] = [];
 	maxGuesses : number = 6;
 	wordlist: {[key: number]: string[]};
+	user_wordlist: string[];
 
 	host : Player;
 	isStarted : boolean = false;
@@ -41,7 +42,7 @@ class Game {
 			this.host = newPlayer;
 
 		if(this.isStarted == true)
-			newPlayer.socket.emit('start', { word: this.word }); // must emit this before sending guesses to not clear board
+			newPlayer.socket.emit('start', { word: this.word, wordlist: this.user_wordlist }); // must emit this before sending guesses to not clear board
 
 		this.players.forEach((element) => { // send other players to new players and all the guesses so far
 			newPlayer.socket.emit('add_player', {
@@ -114,7 +115,7 @@ class Game {
 			this.rollWord()
 			this.isStarted = true;
 			this.players.forEach(element => {
-         		element.socket.emit('start', { word: this.word });
+				element.socket.emit('start', { word: this.word, wordlist: this.user_wordlist }); 
 			});
 		}
 	}
@@ -124,6 +125,11 @@ class Game {
 		this.id = shortid.generate();
 		this.guessLength = 5;
 		this.wordlist = wordlist;
+		this.user_wordlist = JSON.parse(JSON.stringify(this.wordlist[this.guessLength]));
+		this.user_wordlist.push("yoris");
+		this.user_wordlist.push("penis");
+		this.user_wordlist.push("sperm");
+		this.user_wordlist.push("cunts");
 	}
 };
 class Player {

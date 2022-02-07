@@ -24,6 +24,7 @@
 			return res;
 		}
 		var is_started = false;
+		var wordlist = [];
 		var socket;
 		function createSocket(id) {
 			socket = io("http://localhost:8080");
@@ -32,7 +33,7 @@
 			});
 			socket.on('guess', function(data) {
 				console.log(`${data.nick} (${data.id}) guessed ${data.text} with guess id ${data.guess_id}. correct: ${data.correct}`);
-				set_grid_text(data.id, data.guess_id, data.text);
+				//set_grid_text(data.id, data.guess_id, data.text);
 				if(data.id == my_id)
 					set_grid_colors('test', data.guess_id, compare(data.text, data.correct));
 				else
@@ -56,7 +57,9 @@
 				$(`<span id="${player.id}-playerlist-points">`).text('0').appendTo(`#${player.id}-playerlist`);
 			});
 			socket.on('start', function(data) {
+				wordlist = data.wordlist;
 				console.log(data);
+				console.log(wordlist);
 				console.log("STARTING!!");
 				is_started = true;
 				guess = 0;
@@ -132,6 +135,11 @@
 			if(is_started !== true) return;
 			if(e.key == 'Enter') {
 				if(user_word.length != 5) return;
+				console.log(wordlist);
+				if(!wordlist || !wordlist.includes(user_word)) {
+					alert("Word doesnt exist!!");
+					return;
+				}
 				socket.emit('guess', user_word);
 				guess ++;
 				user_word = '';
@@ -203,7 +211,7 @@
 			margin-top: 5px;
 			margin-left: 5px;
 			border-radius: 10%;
-			border-color: rgb(172, 210, 162);
+			border-color: #3a3a3c;
 			border-style: solid;
 			border-width: 2px;
 			width: 60px;
@@ -213,21 +221,28 @@
 			font-size: 3em;
 			text-align: center;
 			vertical-align: middle;
+			background-color: #121213;
 		}
 		.grid_good {
-			background-color: green;
+			background-color: #538d4e;
+			border-color: rgba(0, 0, 0, 0);
 		}
 		.grid_bad {
-			background-color: red;
+			border-color: rgba(0, 0, 0, 0);
+			background-color: #3a3a3c;
 		}
 		.grid_mid {
-			background-color: yellow;
+			border-color: rgba(0, 0, 0, 0);
+			background-color: #b59f3b;
 		}
-		
+		body {
+			background-color: #121213;
+			color: white;
+		}
 	</style>
 </head>
 
-<body style="background-color: black; color: white;">
+<body>
 	<h1 style="text-align: center; color: gray;">
 		Welcome to worlde!
 	</h1>
