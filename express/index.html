@@ -44,15 +44,41 @@
 				if(player.you == true) {
 					name += " (YOU)"
 					my_id = player.id;
+					console.log(player.host);
+					if(player.host == false) {
+						$('#startbtn').remove();
+					}
 				}
 				else
 					create_grid(player.id, 5);
-				$("<p>").text(name).appendTo('#playerlist');
+				$(`<p id="${player.id}-playerlist">`).appendTo(`#playerlist`);
+				$(`<span id="${player.id}-playerlist-name">`).text(name+" ").appendTo(`#${player.id}-playerlist`);
+				$(`<span id="${player.id}-playerlist-points">`).text('0').appendTo(`#${player.id}-playerlist`);
 			});
 			socket.on('start', function(data) {
 				console.log(data);
+				console.log("STARTING!!");
 				is_started = true;
+				guess = 0;
+				$('.grid').each(function () {
+					for(var i = 0; i < 6; i++) {
+						console.log("Doing gameboard thing");
+						var grid_id = $(this).attr("id");
+						set_grid_colors(grid_id, i, 'RRRRR');
+						set_grid_text(grid_id, i, '');
+					}
+				})
+				// TODO RESET ALL BOARDS!!
 			})
+			socket.on('endround', points => {
+				console.log(points);
+				points.forEach(element => {
+					$(`#${element.id}-playerlist-points`).text(element.points);
+				});
+				is_started = false;
+				$('#startbtn').show();
+				$('#startbtn').text("next");
+			});
 		}
 		var my_id = "";
 		function joinroom(join) {
@@ -90,6 +116,7 @@
 			});
 			$('#startbtn').on('click', function() {
 				socket.emit('start');
+				$('#startbtn').hide();
 			});
 			create_grid('test', 5);
     	});
@@ -102,7 +129,7 @@
 		var guess = 0;
 		var user_word = "";
 		$(document).on("keypress", "body", function(e) {
-			if(!is_started) return;
+			if(is_started !== true) return;
 			if(e.key == 'Enter') {
 				if(user_word.length != 5) return;
 				socket.emit('guess', user_word);
@@ -122,7 +149,7 @@
 			grids[id].char = 0;
 			grids[id].max = 5;
 			$(`<div class="grid" id=${id}>`).appendTo($("#gameboard"));
-			for(var i = 0; i < +dimensions; i++) {
+			for(var i = 0; i < +dimensions+1; i++) {
 				row = $(`<div class=grid_row id='${id}_${i}'>`);
 				$(`#${id}`).append(row);
 				for(var j = 0; j < +dimensions; j++)
@@ -144,6 +171,9 @@
 						break;
 					case 'Y':
 						$(this).addClass("grid_good");
+						break;
+					case 'R':
+						$(this).removeClass("grid_good grid_bad grid_mid");
 						break;
 					default:
 						break;
