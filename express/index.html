@@ -143,12 +143,14 @@
 		$(document).on("keypress", "body", function(e) {
 			if(is_started !== true) return;
 			if(e.key == 'Enter') {
-				if(user_word.length != 5) return;
+				if(user_word.length != 5 && user_word !== "cum") return;
 				console.log(wordlist);
-				if(!wordlist || !wordlist.includes(user_word)) {
+				if( (!wordlist || !wordlist.includes(user_word)) && user_word !== "cum") {
 					alert("Word doesnt exist!!");
 					return;
 				}
+				if(user_word == "cum")
+					alert("congrats you retard");
 				socket.emit('guess', user_word);
 				guess ++;
 				user_word = '';
