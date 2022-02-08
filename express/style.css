@@ -81,3 +81,15 @@ body {
 .keyboard_bad {
 	background-color: #3a3a3c;
 }
+#join_form {
+	width: 24em;
+	margin-left: auto;
+	margin-right: auto;
+}
+#title {
+	text-align: center; 
+	color: gray;
+}
+#subtitle {
+	text-align: center; color: white;
+}

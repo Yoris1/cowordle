@@ -7,41 +7,8 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<title>Worlde</title>
 	<script src="/socket.io/socket.io.js"></script>
-	
+	<script src="./scripts/word_compare.js"></script>
 	<script>	
-		function compare(w, good, self) {
-			var res = ['N', 'N', 'N', 'N', 'N'];
-			w = w.toLowerCase();
-			good = good.toLowerCase();
-			for(var id = 0; id < w.length; id++) {
-				var letter = good[id];
-				for(var j = 0; j < w.length; j++) {
-					var id1 = id+j;
-					var id2 = id-j;
-					if( (w[id1] && w[id1] == letter) ) {
-						res[id1] = j==0?"Y":"M";
-						break;
-					} else if((w[id2] && w[id2] == letter)) {
-						res[id2] = j==0?"Y":"M";
-						break;
-					}
-				}
-			}
-			if(self === true) {
-				for(var i = 0; i < w.length; i++) {
-					if(res[i] == 'N' && ! ($("#"+w[i]).hasClass("keyboard_good")) )
-						$("#"+w[i]).addClass("keyboard_bad");
-					else if(res[i] == 'M') {
-						$("#"+w[i]).removeClass("keyboard_bad");
-					}
-					else if(res[i] == 'Y') {
-						$("#"+w[i]).removeClass("keyboard_bad");
-						$("#"+w[i]).addClass("keyboard_good");
-					}
-				}
-			}
-			return res;
-		}
 		var is_started = false;
 		var wordlist = [];
 		var socket;
@@ -64,12 +31,10 @@
 				if(player.you == true) {
 					name += " (you)"
 					my_id = player.id;
-					console.log(player.host);
 					if(player.host == false) {
 						$('#startbtn').remove();
 					} else {
-						if(!is_started)
-							$('#startbtn').show();
+						if(!is_started) $('#startbtn').show();
 					}
 				}
 				else
@@ -187,14 +152,15 @@
 			set_grid_text('test', guess, user_word);
 		}
 		$(document).on("keydown", "body", function(e) {
-			if(e.key == 'Backspace')
-				removeLetter()
+			if(e.key == 'Backspace') removeLetter()
 		});
-		var guess = 0;
-		var user_word = "";
 		$(document).on("keypress", "body", function(e) {
 			typeLetter(e.key);
 		});
+
+		var guess = 0;
+		var user_word = "";
+		
 		var grids = {}
 		function create_grid(id, dimensions, name) {
 			grids[id] = {};
@@ -243,19 +209,20 @@
 					$(this).text(word[i++]);
 			})
 		}
-		
-
 	</script>
 	<link rel="stylesheet" href="./style.css">
 </head>
 
 <body>
-	<h1 style="text-align: center; color: gray;">
+	<h1 id="title">
 		Welcome to worlde!
 	</h1>
-	<h3 style="text-align: center; color: white;">
-		A copy of the smash hit game "wordle" invented by Josh Wardle that you can play with friends!</h3>
-	<div style="width: 24em; margin-left: auto; margin-right: auto;" id = "join_form">
+
+	<h3 id="subtitle">
+		A copy of the smash hit game "wordle" invented by Josh Wardle that you can play with friends!
+	</h3>
+
+	<div id = "join_form">
 		<input type="text" placeholder="your name <3" id='nick' style="margin-left: auto; margin-right: auto; width: 50%; display: block;">
 		<br>
 		<button id="create">Create Room</button>
@@ -263,11 +230,12 @@
 		<input type="text" placeholder="RoomID" id="roomid"> 
 		<button id="join">join</button>
 	</div>
+
 	<div id="roominfo" hidden = true>
 		<h1>your room: <span id='current_room_id'>undefined</span></h1>
 	</div>
-	<div id="gameboard" hidden = true>
-	</div>
+
+	<div id="gameboard" hidden = true> </div>
 
 	<div id="playerlist" style="color: white;">
 	</div>
