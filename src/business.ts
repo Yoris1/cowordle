@@ -66,6 +66,10 @@ class Game {
 
 		});
 	}
+	removePlayer(player: Player) {
+		console.log("If people complain about players getting removed its prolly this");
+		this.players.splice(this.players.indexOf(player), 1);
+	}
 	endRound() {
 		console.log("Ending round!! Need to reset state and send all the players the points");
 		var playerPoints = [];
@@ -181,6 +185,9 @@ export class GameManager {
 			});
 			client.on('start', () => {
 				this.games[p.room].start(p);
+			})
+			client.once('disconnect', () => {
+				this.games[p.room].removePlayer(p);
 			})
 		});
 	}
