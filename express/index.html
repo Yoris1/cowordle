@@ -27,6 +27,12 @@
 					}
 				}
 			}
+			for(var i = 0; i < w.length; i++) {
+				if(res[i] == 'N')
+					$("#"+w[i]).addClass("keyboard_bad");
+				else if(res[i] == 'Y')
+					$("#"+w[i]).addClass("keyboard_good");
+			}
 			return res;
 		}
 		var is_started = false;
@@ -49,15 +55,18 @@
 				var name = player.nick;
 				console.log(`Adding player ${name}`);
 				if(player.you == true) {
-					name += " (YOU)"
+					name += " (you)"
 					my_id = player.id;
 					console.log(player.host);
 					if(player.host == false) {
 						$('#startbtn').remove();
+					} else {
+						if(!is_started)
+							$('#startbtn').show();
 					}
 				}
 				else
-					create_grid(player.id, 5);
+					create_grid(player.id, 5, player.nick);
 				$(`<p id="${player.id}-playerlist">`).appendTo(`#playerlist`);
 				$(`<span id="${player.id}-playerlist-name">`).text(name+" ").appendTo(`#${player.id}-playerlist`);
 				$(`<span id="${player.id}-playerlist-points">`).text(player.points).appendTo(`#${player.id}-playerlist`);
@@ -76,7 +85,11 @@
 						set_grid_text(grid_id, i, '');
 					}
 				})
-				// TODO RESET ALL BOARDS!!
+				$('.keyboard_key').each(function() {
+					console.log("cleaning up") 
+					$(this).removeClass("keyboard_good keyboard_bad")
+				});
+
 			})
 			socket.on('wordlist', function(data) {
 				console.log("Got wordlist!!");
@@ -116,33 +129,9 @@
 				}
 			});
 		}
-
-		$(document).ready(function(){
-            $('#create').click(function(event) {
-				event.preventDefault();
-				joinroom(false);
-			});
-			$('#join').click(function(event) {
-				event.preventDefault();
-				joinroom(true);
-			});
-			$('#startbtn').on('click', function() {
-				socket.emit('start');
-				$('#startbtn').hide();
-			});
-			create_grid('test', 5);
-    	});
-		$(document).on("keydown", "body", function(e) {
-			if(e.key == 'Backspace') {
-				user_word = user_word.slice(0, -1);
-				set_grid_text('test', guess, user_word);
-			}
-		});
-		var guess = 0;
-		var user_word = "";
-		$(document).on("keypress", "body", function(e) {
+		function typeLetter(letter) {
 			if(is_started !== true) return;
-			if(e.key == 'Enter') {
+			if(letter.toLowerCase() == 'enter') {
 				if(user_word.length != 5 && user_word !== "cum") return;
 				console.log(wordlist);
 				if( (!wordlist || !wordlist.includes(user_word)) && user_word !== "cum") {
@@ -156,13 +145,50 @@
 				user_word = '';
 				return;
 			}
-			user_word += e.key;
+			user_word += letter;
 			user_word = user_word.slice(0, grids['test'].max)
 			set_grid_text('test', guess, user_word);
+		}
+		$(document).ready(function(){
+            $('#create').click(function(event) {
+				event.preventDefault();
+				joinroom(false);
+			});
+			$('#join').click(function(event) {
+				event.preventDefault();
+				joinroom(true);
+			});
+			$('#startbtn').on('click', function() {
+				socket.emit('start');
+				$('#startbtn').hide();
+			});
+			create_grid('test', 5, 'you');
+			$(".keyboard_key").each( function() {
+				console.log($(this).attr("id"));
+				$(this).on("click", function () {
+					var key = $(this).attr("id");
+					if(key.toLowerCase() == "backspace") {
+						removeLetter()
+					} else
+						typeLetter(key);
+				})	
+			})
+    	});
+		function removeLetter() {
+			user_word = user_word.slice(0, -1);
+			set_grid_text('test', guess, user_word);
+		}
+		$(document).on("keydown", "body", function(e) {
+			if(e.key == 'Backspace')
+				removeLetter()
 		});
-
+		var guess = 0;
+		var user_word = "";
+		$(document).on("keypress", "body", function(e) {
+			typeLetter(e.key);
+		});
 		var grids = {}
-		function create_grid(id, dimensions) {
+		function create_grid(id, dimensions, name) {
 			grids[id] = {};
 			grids[id].row = 0;
 			grids[id].char = 0;
@@ -174,6 +200,7 @@
 				for(var j = 0; j < +dimensions; j++)
 					$(`<div class=grid_entry>`).appendTo(row);
 			}
+			$(`<p class="boardname">`).text(name).appendTo("#"+id);
 		}
 		function set_grid_colors(id, row, word) {
 			var i = 0;
@@ -213,25 +240,29 @@
 	</script>
 	<style>
 		@import url('https://fonts.googleapis.com/css2?family=Supermercado+One&display=swap');
+		.boardname {
+			text-align: center;
+			font-size: 200%;
+		}
 		.grid {
 			display: inline-block;
 			margin-left: 100px;
 			mergin-top: 100px;
-			width: 200px;
-			height: 210px;
-		}
-		#test {
 			width: 400px;
-			height: 420px;
+			height: 460px;
 		}
 		.grid_row {
 			width: 100%;
 			height: 14.667%;
 			margin-top: 2%;
 		}
+		html {
+			font-family: 'Supermercado One';
+
+		}
 		.grid_entry {
 			height: 100%;
-			width: 16%;
+			width: 18%;
 			margin-left: 1%;
 			border-radius: 10%;
 			border-color: #3a3a3c;
@@ -260,6 +291,37 @@
 			background-color: #121213;
 			color: white;
 		}
+		.keyboard_row {
+			margin-left: auto;
+			margin-right: auto;
+			width: auto;
+			align-items: center;
+			margin-top: 0.5%;
+		}
+		#keyboard {
+			text-align: center;
+			width: 30%;
+			height: 20%;
+		}
+		.keyboard_key{ 
+			display: inline-block;
+			width: 8%;
+			height: 2.5em;
+			border-radius: 10%;
+			background-color: #818384;
+		}
+		#enter {
+			width: 16%;
+		}
+		#backspace {
+			width: 16%;
+		}
+		.keyboard_good {
+			background-color: #538d4e;
+		}
+		.keyboard_bad {
+			background-color: #3a3a3c;
+		}
 	</style>
 </head>
 
@@ -278,16 +340,53 @@
 		<button id="join">join</button>
 	</div>
 	<div id="roominfo" hidden = true>
-		<h1>Your room: <span id='current_room_id'>undefined</span></h1>
+		<h1>your room: <span id='current_room_id'>undefined</span></h1>
 	</div>
 	<div id="gameboard" hidden = true>
 	</div>
 
 	<div id="playerlist" style="color: white;">
 	</div>
-	<button id='startbtn'>
+	<button id='startbtn' hidden>
 		start
 	</button>
+
+	<div id="keyboard">
+		<div class="keyboard_row">
+			<div class="keyboard_key" id='q'>q</div>
+			<div class="keyboard_key" id='w'>w</div>
+			<div class="keyboard_key" id='e'>e</div>
+			<div class="keyboard_key" id='r'>r</div>
+			<div class="keyboard_key" id='t'>t</div>
+			<div class="keyboard_key" id='y'>y</div>
+			<div class="keyboard_key" id='u'>u</div>
+			<div class="keyboard_key" id='i'>i</div>
+			<div class="keyboard_key" id='o'>o</div>
+			<div class="keyboard_key" id='p'>p</div>
+		</div>
+		<div class="keyboard_row">
+			<div class="keyboard_key" id='a'>a</div>
+			<div class="keyboard_key" id='s'>s</div>
+			<div class="keyboard_key" id='d'>d</div>
+			<div class="keyboard_key" id='f'>f</div>
+			<div class="keyboard_key" id='g'>g</div>
+			<div class="keyboard_key" id='h'>h</div>
+			<div class="keyboard_key" id='j'>j</div>
+			<div class="keyboard_key" id='k'>k</div>
+			<div class="keyboard_key" id='l'>l</div>
+		</div>
+		<div class="keyboard_row">
+			<div class="keyboard_key" id='enter'>ENTER</div>
+			<div class="keyboard_key" id='z'>z</div>
+			<div class="keyboard_key" id='x'>x</div>
+			<div class="keyboard_key" id='c'>c</div>
+			<div class="keyboard_key" id='v'>v</div>
+			<div class="keyboard_key" id='b'>b</div>
+			<div class="keyboard_key" id='n'>n</div>
+			<div class="keyboard_key" id='m'>m</div>
+			<div class="keyboard_key" id='backspace'>˂</div>
+		</div>
+	</div>
 </body>
 
 </html>
