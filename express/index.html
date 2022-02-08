@@ -29,7 +29,7 @@
 			}
 			if(self === true) {
 				for(var i = 0; i < w.length; i++) {
-					if(res[i] == 'N')
+					if(res[i] == 'N' && ! ($("#"+w[i]).hasClass("keyboard_good")) )
 						$("#"+w[i]).addClass("keyboard_bad");
 					else if(res[i] == 'Y')
 						$("#"+w[i]).addClass("keyboard_good");
