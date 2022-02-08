@@ -69,6 +69,10 @@ class Game {
 	removePlayer(player: Player) {
 		console.log("If people complain about players getting removed its prolly this");
 		this.players.splice(this.players.indexOf(player), 1);
+		if(this.host == player && this.players.length > 0) {
+			this.host = this.players[0]; // need to fix this up on client side
+		} else
+			this.host = undefined;
 	}
 	endRound() {
 		console.log("Ending round!! Need to reset state and send all the players the points");
