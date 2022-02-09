@@ -5,7 +5,6 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-	<title>Worlde</title>
 	<script src="/socket.io/socket.io.js"></script>
 	<script src="./scripts/word_compare.js"></script>
 	<script src="./scripts/input.js"></script>
@@ -14,7 +13,7 @@
 		var wordlist = [];
 		var socket;
 		function createSocket(id) {
-			socket = io("http://localhost:8080");
+			socket = io(window.location.href);
 			socket.on('connect', function(data) {
 				socket.emit('join', {'id': id, 'nick': $('#nick').val()});
 			});
@@ -76,38 +75,37 @@
 			});
 		}
 		var my_id = "";
-		function joinroom(join) {
-			$('#join_form').hide();
-			$('#roominfo').show();
-			$('#gameboard').show();
-			var value = $('#roomid').val();
-			if(join == true)  {
-				$('#current_room_id').text(value);
-				createSocket(value);
-				return;
-			}
+		function createRoom() {
+			console.log("Creating room");
 			$.ajax({
 				type: "POST",
 				url: "/room",
-				data: {'join' : join, 'roomid': value, word_len: 5},
+				data: {word_len: 5},
 				dataType: "json",
 				success: function(result) {
 					console.log(result);
-					console.log("got response from room creation!");
-					$('#current_room_id').text(result.id);
-					createSocket(result.id);
+					joinRoom(result.id);
 				}
 			});
+		}
+		function joinRoom(roomid) {
+			$('#join_form').hide();
+			$('#roominfo').show();
+			$('#gameboard').show();
+
+			$('#current_room_id').text(roomid);
+			createSocket(roomid);
 		}
 
 		$(document).ready(function(){
             $('#create').click(function(event) {
 				event.preventDefault();
-				joinroom(false);
+				createRoom();
 			});
 			$('#join').click(function(event) {
 				event.preventDefault();
-				joinroom(true);
+				var roomid = $('#roomid').val();
+				joinRoom(roomid);
 			});
 			$('#startbtn').on('click', function() {
 				socket.emit('start');
@@ -174,6 +172,8 @@
 		}
 	</script>
 	<link rel="stylesheet" href="./style.css">
+
+	<title>Worlde</title>
 </head>
 
 <body>
