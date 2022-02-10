@@ -22,8 +22,10 @@ function typeLetter(letter) {
 }
 
 function presskey(letter) {
-	if(letter.toLowerCase() == "backspace")
-		removeLetter()
+	if(letter.toLowerCase() == "backspace") {
+		user_word = user_word.slice(0, -1);
+		set_grid_text('test', guess, user_word); 
+	}
 	else if(letter.toLowerCase() == "enter")
 		submitWord();
 	else
