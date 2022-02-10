@@ -7,6 +7,7 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<script src="/socket.io/socket.io.js"></script>
 	<script src="./scripts/word_compare.js"></script>
+	<script src="./scripts/grid.js"></script>
 	<script src="./scripts/input.js"></script>
 	<script>	
 		var is_started = false;
@@ -50,14 +51,7 @@
 				console.log("STARTING!!");
 				is_started = true;
 				guess = 0;
-				$('.grid').each(function () {
-					for(var i = 0; i < 6; i++) {
-						console.log("Doing gameboard thing");
-						var grid_id = $(this).attr("id");
-						set_grid_colors(grid_id, i, 'RRRRR');
-						set_grid_text(grid_id, i, '');
-					}
-				})
+				resetGrids();
 				resetKeyboard();
 			})
 			socket.on('wordlist', function(data) {
@@ -104,8 +98,7 @@
 			});
 			$('#join').click(function(event) {
 				event.preventDefault();
-				var roomid = $('#roomid').val();
-				joinRoom(roomid);
+				joinRoom($('#roomid').val());
 			});
 			$('#startbtn').on('click', function() {
 				socket.emit('start');
@@ -114,62 +107,9 @@
 			create_grid('test', 5, 'you');
     	});
 
-		function removeLetter() {
-			user_word = user_word.slice(0, -1);
-			set_grid_text('test', guess, user_word);
-		}
-
 		var guess = 0;
 		var user_word = "";
 		
-		var grids = {}
-		function create_grid(id, dimensions, name) {
-			grids[id] = {};
-			grids[id].row = 0;
-			grids[id].char = 0;
-			grids[id].max = 5;
-			$(`<div class="grid" id=${id}>`).appendTo($("#gameboard"));
-			for(var i = 0; i < +dimensions+1; i++) {
-				row = $(`<div class=grid_row id='${id}_${i}'>`);
-				$(`#${id}`).append(row);
-				for(var j = 0; j < +dimensions; j++)
-					$(`<div class=grid_entry>`).appendTo(row);
-			}
-			$(`<p class="boardname">`).text(name).appendTo("#"+id);
-		}
-		function set_grid_colors(id, row, word) {
-			var i = 0;
-			console.log(`Doing switch statement for word ${word}`) ;
-			$(`#${id}_${row}`).children('div').each(function() {
-				var char =word[i++];
-				console.log(`Doing switch statement for character ${char}`) ;
-				switch(char){
-					case 'N':
-						$(this).addClass("grid_bad");
-						break;
-					case 'M':
-						$(this).addClass("grid_mid");
-						break;
-					case 'Y':
-						$(this).addClass("grid_good");
-						break;
-					case 'R':
-						$(this).removeClass("grid_good grid_bad grid_mid");
-						break;
-					default:
-						break;
-				}
-			})
-		}
-		function set_grid_text(id, row, word) {
-			var i = 0;
-			$(`#${id}_${row}`).children('div').each(function() {
-				if(word.length <= i) {
-					$(this).text(' ');
-				} else
-					$(this).text(word[i++]);
-			})
-		}
 	</script>
 	<link rel="stylesheet" href="./style.css">
 
