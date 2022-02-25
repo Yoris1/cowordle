@@ -16,7 +16,7 @@ function submitWord() {
 }
 function typeLetter(letter) {
 	if(is_started !== true) return;
-	user_word += letter;
+	user_word += letter.toLowerCase();
 	user_word = user_word.slice(0, grids['test'].max)
 	set_grid_text('test', guess, user_word);
 }
