@@ -1,7 +1,7 @@
 import { readFileSync } from "fs";
+import path = require('path');
 import { Server, Socket } from "socket.io";
 import { uniqueNamesGenerator, animals, colors } from "unique-names-generator";
-import wordsListPath = require("word-list");
 
 
 
@@ -14,7 +14,6 @@ class Game {
 	players :Player[] = [];
 	maxGuesses : number = 6;
 	wordlist: {[key: number]: string[]};
-	user_wordlist: string[];
 
 	host : Player;
 	isStarted : boolean = false;
@@ -25,7 +24,7 @@ class Game {
 
 	addPlayer(newPlayer: Player) : void {
 		if(newPlayer.playing) return; // broken : ) 
-		newPlayer.socket.emit('wordlist', this.user_wordlist);
+		newPlayer.socket.emit('wordlist', this.wordlist);
 		this.players.forEach((element) => {
 			element.socket.emit('add_player', {
 				nick: newPlayer.nick,
@@ -109,7 +108,6 @@ class Game {
 	guess(player: Player, guess: string) : void {
 		console.log("need to do validation here to avoid xss!");
 		player.guesses.push(guess);
-
 		this.players.forEach(element => {
 			element.socket.emit('guess', {
 				text: guess.toLowerCase(),
@@ -132,19 +130,11 @@ class Game {
 			});
 		}
 	}
-
 	constructor(wordlist: {[key: number]: string[]}) {
 		this.isStarted = false;
 		this.id = shortid.generate();
 		this.guessLength = 5;
 		this.wordlist = wordlist;
-		this.user_wordlist = JSON.parse(JSON.stringify(this.wordlist[this.guessLength]));
-		this.user_wordlist.push("yoris");
-		this.user_wordlist.push("penis");
-		this.user_wordlist.push("sperm");
-		this.user_wordlist.push("cunts");
-		this.user_wordlist.push("cocks");
-		this.user_wordlist.push("cock");
 	}
 };
 class Player {
@@ -196,7 +186,7 @@ export class GameManager {
 		});
 	}
 	createWordlists() {
-		const wordArray = readFileSync(wordsListPath, 'utf8').split('\n');
+		const wordArray = readFileSync(path.join(path.dirname(__dirname), "dictionaries", "dictionary.txt"), 'utf8').split('\n');
 		wordArray.forEach((word) => {
 			if (!this.wordlists[word.length]) {
 				this.wordlists[word.length] = [];
