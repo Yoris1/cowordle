@@ -9,6 +9,7 @@
 	<script src="./scripts/word_compare.js"></script>
 	<script src="./scripts/grid.js"></script>
 	<script src="./scripts/input.js"></script>
+	<script src="./scripts/ajax.js"></script>
 	<script>	
 		var is_started = false;
 		var wordlist = [];
@@ -69,27 +70,6 @@
 			});
 		}
 		var my_id = "";
-		function createRoom() {
-			console.log("Creating room");
-			$.ajax({
-				type: "POST",
-				url: "/room",
-				data: {word_len: 5},
-				dataType: "json",
-				success: function(result) {
-					console.log(result);
-					joinRoom(result.id);
-				}
-			});
-		}
-		function joinRoom(roomid) {
-			$('#join_form').hide();
-			$('#roominfo').show();
-			$('#gameboard').show();
-
-			$('#current_room_id').text(roomid);
-			createSocket(roomid);
-		}
 
 		$(document).ready(function(){
             $('#create').click(function(event) {
@@ -113,15 +93,15 @@
 	</script>
 	<link rel="stylesheet" href="./style.css">
 
-	<title>Worlde</title>
+	<title>cringe wordle</title>
 </head>
 
 <body>
 	<h1 id="title">
-		Welcome to worlde!
+		Welcome to wordle!
 	</h1>
 	<h3 id="subtitle">
-		A copy of the smash hit game "wordle" invented by Josh Wardle that you can play with friends!
+		: )
 	</h3>
 
 	<div id = "join_form">
