@@ -13,6 +13,8 @@ class Game {
 	id : string;
 	players :Player[] = [];
 	maxGuesses : number = 6;
+	bestOf : number = 2;
+	gamesPlayed : number = 0;
 	wordlist: {[key: number]: string[]};
 
 	host : Player;
@@ -24,7 +26,7 @@ class Game {
 
 	addPlayer(newPlayer: Player) : void {
 		if(newPlayer.playing) return; // broken : ) 
-		newPlayer.socket.emit('wordlist', this.wordlist);
+		newPlayer.socket.emit('wordlist', this.wordlist[this.guessLength]);
 		this.players.forEach((element) => {
 			element.socket.emit('add_player', {
 				nick: newPlayer.nick,
@@ -95,6 +97,20 @@ class Game {
 			console.log("Resetting player guesses!");
 		});
 		this.isStarted = false;
+
+		this.gamesPlayed+=1;
+		if(this.gamesPlayed < this.bestOf) {
+			console.log("Starting next round in 5 seconds!!");
+			setTimeout(() => {
+				this.begin_game();
+			}, 5000);
+		} else {
+			this.players.forEach(player => {
+				player.socket.emit('endgame');
+				this.gamesPlayed = 0;
+			})
+		}
+		
 	}
 	tryEndRound() {
 		var shouldEnd = true;
@@ -121,13 +137,16 @@ class Game {
 			this.tryEndRound();
 		}
 	}
+	begin_game() : void {
+		this.rollWord()
+		this.isStarted = true;
+		this.players.forEach(element => {
+			element.socket.emit('start', { word: this.word}); 
+		});
+	}
 	start(player: Player) : void {
 		if(player == this.host && this.isStarted === false) {
-			this.rollWord()
-			this.isStarted = true;
-			this.players.forEach(element => {
-				element.socket.emit('start', { word: this.word}); 
-			});
+			this.begin_game();
 		}
 	}
 	constructor(wordlist: {[key: number]: string[]}) {
@@ -135,6 +154,7 @@ class Game {
 		this.id = shortid.generate();
 		this.guessLength = 5;
 		this.wordlist = wordlist;
+		this.gamesPlayed = 0;
 	}
 };
 class Player {

@@ -1,5 +1,5 @@
+var socket;
 function createSocket(id) {
-	var socket;
 	socket = io(window.location.href);
 	socket.on('connect', function(data) {
 		socket.emit('join', {'id': id, 'nick': $('#nick').val()});
@@ -44,13 +44,20 @@ function createSocket(id) {
 		console.log("Got wordlist!!");
 		wordlist = data;
 	});
+
 	socket.on('endround', points => {
 		console.log(points);
 		points.forEach(element => {
 			$(`#${element.id}-playerlist-points`).text(element.points);
 		});
 		is_started = false;
-		$('#startbtn').show();
-		$('#startbtn').text("next");
+		console.log("Should reveal guesses of both players. and display a 5. 4. 3. 2. 1. timer on screen");
 	});
+
+	socket.on('endgame', () => {
+		$('#startbtn').text("next");
+		$('#startbtn').show();
+		console.log("Should show summary of game points now :mwah:");
+	});
+
 }
