@@ -4,8 +4,9 @@ import { Server, Socket } from "socket.io";
 import { uniqueNamesGenerator, animals, colors } from "unique-names-generator";
 
 
-
-const shortid = require('shortid');
+const nanoid = require('nanoid');
+import {customAlphabet} from 'nanoid';
+const generateId = customAlphabet("QWERTYUIOPASDFGHJKLZXCVBNM1234567890".toLowerCase(), 4);
 
 class Game {
 	word : string;
@@ -110,7 +111,7 @@ class Game {
 				this.gamesPlayed = 0;
 			})
 		}
-		
+
 	}
 	tryEndRound() {
 		var shouldEnd = true;
@@ -151,7 +152,7 @@ class Game {
 	}
 	constructor(wordlist: {[key: number]: string[]}) {
 		this.isStarted = false;
-		this.id = shortid.generate();
+		this.id = generateId();
 		this.guessLength = 5;
 		this.wordlist = wordlist;
 		this.gamesPlayed = 0;
