@@ -2,6 +2,7 @@ import { readFileSync } from "fs";
 import path = require('path');
 import { Server, Socket } from "socket.io";
 import { uniqueNamesGenerator, animals, colors } from "unique-names-generator";
+import escape = require('escape-html');
 
 
 const nanoid = require('nanoid');
@@ -189,7 +190,7 @@ export class GameManager {
 			this.players[p.id] = p;
 
   			client.on('join', (data) => {
-				p.setNick(encodeURIComponent(data.nick));
+				p.setNick(escape(data.nick));
 				if(data.id && this.games[data.id]){
 					this.games[data.id].addPlayer(p);
 				}
