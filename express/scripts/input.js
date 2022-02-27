@@ -3,17 +3,31 @@ function resetKeyboard() {
 	$('.keyboard_key').each(function() {
 		$(this).removeClass("keyboard_good keyboard_bad");
 	});
-} 
+}
+
 function submitWord() {
 	if(user_word.length != 5) return;
 	if( (!wordlist || !wordlist.includes(user_word))) {
-		alert("Word is not in the wordlist!!");
+		alert("the word you entered does not exist!");
 		return;
 	}
 	socket.emit('guess', user_word);
 	guess ++;
 	user_word = '';
 }
+
+function verifyWord() {
+	if(!wordlist || !wordlist.includes(user_word)) {
+		console.log("need to give red outline");
+		if(user_word.length < grids['test'].max)
+			set_grid_colors('test', guess, "RRRRRRRRRRRR");
+		else
+			set_grid_colors('test', guess, "FFFFFFFFFFFFF");
+	} else {
+		set_grid_colors('test', guess, "RRRRRRRRRRRR");
+	}
+}
+
 function typeLetter(letter) {
 	if(is_started !== true) return;
 	user_word += letter.toLowerCase();
@@ -30,6 +44,7 @@ function presskey(letter) {
 		submitWord();
 	else
 		typeLetter(letter);
+	verifyWord();
 }
 
 $(document).ready(function() {

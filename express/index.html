@@ -13,6 +13,7 @@
 	<script src="./scripts/net.js"></script>
 	<script src="./scripts/buttons.js"></script>
 	<script src="./scripts/join_links.js"></script>
+	<script src="./scripts/alert.js"></script>
 	<script>	
 		var is_started = false;
 		var wordlist = [];
@@ -27,6 +28,9 @@
 </head>
 
 <body>
+	<div id="alertbox" class="unselectable">
+		<p id="alerttext">the word you entered does not exist!</p>
+	</div>
 	<h1 id="title">
 		Welcome to wordle!
 	</h1>

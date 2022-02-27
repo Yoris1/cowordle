@@ -42,13 +42,15 @@ function set_grid_colors(id, row, word) {
 	$(`#${id}_${row}`).children('div').each(function() {
 		var char =word[i++];
 		console.log(`Doing switch statement for character ${char}`) ;
+		$(this).removeClass("grid_good grid_bad grid_mid grid_notreal");
+
 		if(char == 'N') 
 			$(this).addClass("grid_bad");
 		else if(char == 'M')
 			$(this).addClass("grid_mid");
 		else if(char == 'Y')
 			$(this).addClass("grid_good");
-		else
-			$(this).removeClass("grid_good grid_bad grid_mid");
+		else if(char == 'F')
+			$(this).addClass("grid_notreal");
 	})
 }
