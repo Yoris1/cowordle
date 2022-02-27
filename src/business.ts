@@ -7,6 +7,7 @@ import escape = require('escape-html');
 
 const nanoid = require('nanoid');
 import {customAlphabet} from 'nanoid';
+import { textChangeRangeIsUnchanged } from "typescript";
 const generateId = customAlphabet("QWERTYUIOPASDFGHJKLZXCVBNM1234567890".toLowerCase(), 4);
 
 class Game {
@@ -21,6 +22,21 @@ class Game {
 
 	host : Player;
 	isStarted : boolean = false;
+	typing(initiator) {
+		this.players.forEach(player => {
+			if(player != initiator)
+				player.socket.emit("typing");
+		}) // should probably remake to make a list of players and which one is typing, but this should work for now. 
+	}
+	wrongword(initiator) {
+		this.players.forEach(player => {
+			if(player != initiator)
+				player.socket.emit('wrongword', {
+					id: initiator.id,
+					guess_id: initiator.guesses.length,
+				});
+		})
+	}
 	rollWord() {
 		var wordlist = this.wordlist[this.guessLength];
 		this.word = wordlist[Math.floor(Math.random()*wordlist.length)];
@@ -199,6 +215,12 @@ export class GameManager {
 			client.on('guess', (data) => {
 				this.games[p.room].guess(p, data);
 			});
+			client.on('typing', () => {
+				this.games[p.room].typing(p);
+			})
+			client.on('wrongword', () => {
+				this.games[p.room].wrongword(p);
+			})
 			client.on('start', () => {
 				this.games[p.room].start(p);
 			})
