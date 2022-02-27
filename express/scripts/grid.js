@@ -42,8 +42,8 @@ function set_grid_colors(id, row, word) {
 	$(`#${id}_${row}`).children('div').each(function() {
 		var char =word[i++];
 		console.log(`Doing switch statement for character ${char}`) ;
-		$(this).removeClass("grid_good grid_bad grid_mid grid_notreal");
-
+		$(this).removeClass("grid_notreal");
+		// should just separate not real words out into a separate function.
 		if(char == 'N') 
 			$(this).addClass("grid_bad");
 		else if(char == 'M')
@@ -52,5 +52,8 @@ function set_grid_colors(id, row, word) {
 			$(this).addClass("grid_good");
 		else if(char == 'F')
 			$(this).addClass("grid_notreal");
+		else if(char == 'R') {
+			$(this).removeClass("grid_good grid_bad grid_mid grid_notreal");
+		}
 	})
 }

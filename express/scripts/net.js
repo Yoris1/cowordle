@@ -12,6 +12,12 @@ function createSocket(id) {
 		else
 			set_grid_colors(data.id, data.guess_id, compare(data.text, data.correct, false));
 	})
+	socket.on('wrongword', function(data) {
+		set_grid_colors(data.id, data.guess_id, "FFFFFFFFFFFF");
+		setTimeout(() => {
+			set_grid_colors(data.id, data.guess_id, "EEEEEEEEEEEEEEE");
+		}, 1000);
+	})
 	socket.on('add_player', function(player) {
 		var name = player.nick;
 		console.log(`Adding player ${name}`);

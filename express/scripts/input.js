@@ -20,11 +20,13 @@ function verifyWord() {
 	if(!wordlist || !wordlist.includes(user_word)) {
 		console.log("need to give red outline");
 		if(user_word.length < grids['test'].max)
-			set_grid_colors('test', guess, "RRRRRRRRRRRR");
-		else
+			set_grid_colors('test', guess, "EEEEEEEEEEEEEEE");// the EE means nothing, just want to update grid colors and js sucks ass
+		else {
 			set_grid_colors('test', guess, "FFFFFFFFFFFFF");
+			socket.emit('wrongword');
+		}
 	} else {
-		set_grid_colors('test', guess, "RRRRRRRRRRRR");
+		set_grid_colors('test', guess, "EEEEEEEEEEEEEEE");
 	}
 }
 
