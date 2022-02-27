@@ -12,6 +12,7 @@
 	<script src="./scripts/ajax.js"></script>
 	<script src="./scripts/net.js"></script>
 	<script src="./scripts/buttons.js"></script>
+	<script src="./scripts/join_links.js"></script>
 	<script>	
 		var is_started = false;
 		var wordlist = [];
@@ -38,12 +39,17 @@
 		<input type="text" placeholder="your name" id='nick' style="margin-left: auto; margin-right: auto; width: 100%; display: block;">
 		<br>
 		<button id="create">Create Room</button>
-		<b>OR</b>
+
+		<b id="create_or_join">OR</b>
 		<input type="text" placeholder="RoomID" id="roomid"> 
 		<button id="join">join</button>
 	</div>
 
-	<h1 id="roominfo" hidden>your room: <span id='current_room_id'></span></h1>
+	<div id="roominfo" hidden>
+		<h1 >your room: <span id='current_room_id'></span></h1>
+		<h1 id="makeinvite" class="unselectable">click here to get invite</h1>
+	</div>
+
 	<div id="gameboard" hidden> </div>
 	<div id="playerlist" style="color: white;"></div>
 	<button id='startbtn' hidden>start</button>
