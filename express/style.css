@@ -4,6 +4,7 @@
 	--background: #121212;
 	--foreground: white; 
 	--foreground_alt: rgb(200, 200, 200);
+	--screenwidth: calc(100%/10);
 }
 
 body {
@@ -128,8 +129,10 @@ html {
 }
 #keyboard {
 	text-align: center;
-	width: 30%;
+	width: 400px;
 	height: 20%;
+	margin-left: auto;
+	margin-right: auto;
 }
 .keyboard_key{ 
 	display: inline-block;
