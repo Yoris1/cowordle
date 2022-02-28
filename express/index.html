@@ -21,6 +21,9 @@
 
 		var guess = 0;
 		var user_word = "";
+		$(document).ready(function() {
+			$("#gameboard").hide();
+		})
 	</script>
 	<link rel="stylesheet" href="./style.css">
 
@@ -31,13 +34,15 @@
 	<div id="alertbox" class="unselectable">
 		<p id="alerttext">the word you entered does not exist!</p>
 	</div>
-	<h1 id="title">
-		Welcome to wordle!
-	</h1>
+	<a href="./" id="title">
+		yoris wordle
+	</a>
 	<h3 id="subtitle">
-		: )
+		a multiplayer word guessing game
 	</h3>
-
+	<div id="separator"></div>
+	<br> <br>
+	
 	<div id = "join_form">
 		<input type="text" placeholder="your name" id='nick' style="margin-left: auto; margin-right: auto; width: 100%; display: block;">
 		<br>
@@ -53,7 +58,7 @@
 		<h1 id="makeinvite" class="unselectable">click here to get invite</h1>
 	</div>
 
-	<div id="gameboard" hidden> </div>
+	<div id="gameboard"> </div>
 	<div id="playerlist" style="color: white;"></div>
 	<button id='startbtn' hidden>start</button>
 	<div id="keyboard" hidden></div>
