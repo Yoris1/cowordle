@@ -1,10 +1,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Supermercado+One&display=swap');
-
+#roominfo {
+	text-align: right;
+}
 :root { 
 	--background: #121212;
 	--foreground: white; 
 	--foreground_alt: rgb(200, 200, 200);
 	--screenwidth: calc(100%/10);
+	--keyboard_key_width: calc(100%/12);
+	--keyboard_key_margin: calc(var(--keyboard_key_width)/12);
 }
 
 body {
@@ -64,6 +68,7 @@ body {
 .boardname {
 	text-align: center;
 	font-size: 200%;
+	margin-bottom: 0;
 }
 .grid {
 	display: inline-block;
@@ -120,39 +125,11 @@ html {
 	border-color: red;
 }
 
-.keyboard_row {
-	margin-left: auto;
-	margin-right: auto;
-	width: auto;
-	align-items: center;
-	margin-top: 0.5%;
-}
-#keyboard {
+.playerpoints {
 	text-align: center;
-	width: 400px;
-	height: 20%;
-	margin-left: auto;
-	margin-right: auto;
+	margin-top: 0;
 }
-.keyboard_key{ 
-	display: inline-block;
-	width: 8%;
-	height: 2.5em;
-	border-radius: 10%;
-	background-color: #818384;
-}
-#enter {
-	width: 16%;
-}
-#backspace {
-	width: 16%;
-}
-.keyboard_good {
-	background-color: #538d4e;
-}
-.keyboard_bad {
-	background-color: #3a3a3c;
-}
+
 #join_form {
 	width: 24em;
 	margin-left: auto;

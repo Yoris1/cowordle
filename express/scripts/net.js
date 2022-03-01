@@ -34,7 +34,14 @@ function createSocket(id) {
 			create_grid(player.id, 5, player.nick);
 		$(`<p id="${player.id}-playerlist">`).appendTo(`#playerlist`);
 		$(`<span id="${player.id}-playerlist-name">`).text(name+" ").appendTo(`#${player.id}-playerlist`);
-		$(`<span id="${player.id}-playerlist-points">`).text(player.points).appendTo(`#${player.id}-playerlist`);
+		var id = player.id;
+		if(player.you === true)
+			id = 'test';
+		var points = "";
+		if(+player.points>0)
+			points = player.points
+		$(`<p id="${player.id}-playerlist-points" class="playerpoints">`).text(points).appendTo(`#${id}`);
+		console.log("Appplying to "+id);
 	});
 	socket.on('start', function(data) {
 		$('#keyboard').show();
@@ -54,7 +61,7 @@ function createSocket(id) {
 	socket.on('endround', points => {
 		console.log(points);
 		points.forEach(element => {
-			$(`#${element.id}-playerlist-points`).text(element.points);
+			$(`#${element.id}-playerlist-points`).text("points: " + element.points);
 		});
 		is_started = false;
 		console.log("Should reveal guesses of both players. and display a 5. 4. 3. 2. 1. timer on screen");

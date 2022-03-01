@@ -1,0 +1,46 @@
+#keyboard {
+	text-align: center;
+	width: 600px;
+	height: 200px;
+	
+	position: absolute;
+	margin-left: auto;
+	margin-right: auto;
+	right: 0;
+	left: 0;
+	bottom: 10%;
+}
+.keyboard_row {
+	margin-top: var(--keyboard_key_margin);
+	height: calc(100%/3);
+
+	width: 100%;
+}
+.keyboard_key{ 
+	display: inline-block;
+	
+	height: 100%;
+	width: var(--keyboard_key_width);
+	margin-left: var(--keyboard_key_margin);
+	
+	font-size: 30px;
+	border-radius: 10%;
+}
+
+#enter {
+	width: calc(var(--keyboard_key_width)*1.55);
+}
+#backspace {
+	width: calc(var(--keyboard_key_width)*1.55);
+}
+
+
+.keyboard_key {
+	background-color: #818384;
+}
+.keyboard_good {
+	background-color: #538d4e;
+}
+.keyboard_bad {
+	background-color: #3a3a3c;
+}

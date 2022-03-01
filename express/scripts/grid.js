@@ -24,7 +24,7 @@ function create_grid(id, dimensions, name) {
 		for(var j = 0; j < +dimensions; j++)
 			$(`<div class=grid_entry>`).appendTo(row);
 	}
-	$(`<p class="boardname">`).text(name).appendTo("#"+id);
+	$(`<p class="boardname">`).text(name).prependTo("#"+id);
 }
 
 function set_grid_text(id, row, word) {

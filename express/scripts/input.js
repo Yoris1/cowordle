@@ -51,13 +51,14 @@ function presskey(letter) {
 
 $(document).ready(function() {
 	// create virtual keyboard
+	var r =0;
 	rows.forEach(row => {
-		var keyboard_row = $('#keyboard').append($(`<div class="keyboard_row">`));
+		$('#keyboard').append($(`<div class="keyboard_row" id="keyboard_row_${++r}">`));
 		for(var i = 0; i < row.length; i++) {
 			var char = row[i];
 			if(char == '<' || char == '>')
 				char = char=='<'?'backspace':'enter';
-			keyboard_row.append($(`<div class="keyboard_key" id='${char}'>`).text(char));
+			$(`<div class="keyboard_key" id='${char}'>`).text(char).appendTo($("#keyboard_row_"+r));
 		}
 	});
 
