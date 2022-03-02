@@ -42,8 +42,12 @@ function createSocket(id) {
 		gridManager.set_wordlist(data);
 	});
 	
-	socket.on('endround', points => {
-		console.log(points);
+	socket.on('endround', data => {
+		console.log(data);
+		data.points.forEach(player => {
+			if(player.id === data.you) player.id = "you";
+			gridManager.get_grid(player.id).set_points(player.points);
+		});
 		is_started = false;
 		gridManager.toggle_opponent_grid_visibility(true);
 	});

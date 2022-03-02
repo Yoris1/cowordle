@@ -110,7 +110,7 @@ class Game {
 			});
 		});
 		this.players.forEach(player => {
-			player.socket.emit('endround', playerPoints);
+			player.socket.emit('endround', {you: player.id, points: playerPoints});
 			player.guesses.length = 0; // reset player guesses
 			console.log("Resetting player guesses!");
 		});
