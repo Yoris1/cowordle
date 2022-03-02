@@ -41,7 +41,9 @@ function createSocket(id) {
 		console.log('wordlist');
 		gridManager.set_wordlist(data);
 	});
-	
+	socket.on('remove_player', function(data) {
+		gridManager.remove_grid(data);
+	});
 	socket.on('endround', data => {
 		console.log(data);
 		data.points.forEach(player => {

@@ -1,4 +1,7 @@
 class GridManager {
+	remove_grid(id) {
+		this.grids[id].container.remove();
+	}
 	get_grid(id) {
 		return this.grids[id];
 	}

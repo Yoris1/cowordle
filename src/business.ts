@@ -92,6 +92,9 @@ class Game {
 			this.host = this.players[0]; // need to fix this up on client side
 		} else
 			this.host = undefined;
+		this.players.forEach(p => {
+			p.socket.emit('remove_player', player.id);
+		})
 	}
 	endRound() {
 		console.log("Ending round!! Need to reset state and send all the players the points");
