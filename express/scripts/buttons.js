@@ -22,5 +22,4 @@ $(document).ready(function(){
 		navigator.clipboard.writeText(invite);
 		console.log(`Making an invite. link: ${invite}`);
 	})
-	create_grid('test', 5, 'you');
 });

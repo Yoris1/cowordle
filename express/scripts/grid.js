@@ -62,7 +62,7 @@ class Grid {
 	submit() {
 		if(this.is_guess_valid() && this.correct_word) {
 			var guess = this.guesses[this.current_line];
-			this.set_colors(this.current_line, compare(guess, this.correct_word, false));
+			this.set_colors(this.current_line, compare(guess, this.correct_word, true));
 			this.current_line++;
 		}
 	}
@@ -110,15 +110,3 @@ class Grid {
 		}
 	}
 };
-var test_grid;
-$(document).ready(function() {
-	test_grid = new Grid(5, 6);
-	// delete this function !! this is for testing!! this is bad!!
-	test_grid.set_name("test");
-	test_grid.set_points(100);
-	test_grid.type_letter("t");
-	test_grid.type_letter("e");
-	test_grid.type_letter("v");
-	test_grid.set_correct_word("penis");
-	test_grid.backspace();
-});

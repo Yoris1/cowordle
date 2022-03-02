@@ -44,7 +44,6 @@ class Game {
 
 	addPlayer(newPlayer: Player) : void {
 		if(newPlayer.playing) return; // broken : ) 
-		newPlayer.socket.emit('wordlist', this.wordlist[this.guessLength]);
 		this.players.forEach((element) => {
 			element.socket.emit('add_player', {
 				nick: newPlayer.nick,
@@ -84,6 +83,7 @@ class Game {
 			}
 
 		});
+		newPlayer.socket.emit('wordlist', this.wordlist[this.guessLength]);
 	}
 	removePlayer(player: Player) {
 		console.log("If people complain about players getting removed its prolly this");
