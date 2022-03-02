@@ -29,6 +29,7 @@ class Grid {
 			this._reset_row(i);
 	}
 	set_text(text, row) {
+		if(!this.show_text && text !== "") return;
 		var i = 0;
 		for(; i < text.length; i++)
 			this.matrix[row][i].text(text[i]);
