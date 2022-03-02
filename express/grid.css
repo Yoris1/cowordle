@@ -1,0 +1,42 @@
+.grid {
+	display: inline-block;
+	width: 400px;
+	height: 460px;
+	padding-left: 50px;
+	padding-right: 50px;
+}
+.grid_row {
+	width: 100%;
+	height: 14.667%;
+	margin-top: 2%;
+}
+.grid_entry {
+	height: 100%;
+	width: 18%;
+	margin-left: 1%;
+	border-radius: 10%;
+	border-color: var(--grid_outline_normal);
+	border-style: solid;
+	border-width: 2px;
+	display: inline-block;
+	font-family: 'Supermercado One';
+	font-size: 3em;
+	text-align: center;
+	vertical-align: middle;
+	background-color: var(--grid_background);
+}
+.grid_good {
+	background-color: var(--guess_correct);
+	border-color: var(--grid_outline_used);
+}
+.grid_bad {
+	border-color: var(--grid_outline_used);
+	background-color: var(--guess_doesntinclude);
+}
+.grid_mid {
+	border-color: var(--grid_outline_used);
+	background-color: var(--guess_includes);
+}
+.grid_notreal{
+	border-color: var(--grid_outline_bad);
+}

@@ -1,0 +1,17 @@
+:root { 
+	--background: #121212;
+	--foreground: white; 
+	--foreground_alt: rgb(200, 200, 200);
+	
+	--keyboard_key_width: calc(100%/12);
+	--keyboard_key_margin: calc(var(--keyboard_key_width)/12);
+
+	--guess_includes: #b59f3b;
+	--guess_doesntinclude: #3a3a3c;
+	--guess_correct: #538d4e;
+
+	--grid_background: #121213;
+	--grid_outline_normal: #3a3a3c;
+	--grid_outline_bad: red;
+	--grid_outline_used: rgba(0, 0, 0, 0);
+}
