@@ -1,5 +1,5 @@
 function compare(w, good, self) {
-  const res = ['N', 'N', 'N', 'N', 'N'];
+  const res = ['bad', 'bad', 'bad', 'bad', 'bad'];
   w = w.toLowerCase();
   good = good.toLowerCase();
   for (let id = 0; id < w.length; id++) {
@@ -8,19 +8,19 @@ function compare(w, good, self) {
       const id1 = id + j;
       const id2 = id - j;
       if ((w[id1] && w[id1] == letter)) {
-        res[id1] = j == 0 ? 'Y' : 'M';
+        res[id1] = j == 0 ? 'good' : 'mid';
         break;
       } else if ((w[id2] && w[id2] == letter)) {
-        res[id2] = j == 0 ? 'Y' : 'M';
+        res[id2] = j == 0 ? 'good' : 'mid';
         break;
       }
     }
   }
   if (self === true) {
     for (let i = 0; i < w.length; i++) {
-      if (res[i] == 'N' && !($(`#${w[i]}`).hasClass('keyboard_good'))) { $(`#${w[i]}`).addClass('keyboard_bad'); } else if (res[i] == 'M') {
+      if (res[i] == 'bad' && !($(`#${w[i]}`).hasClass('keyboard_good'))) { $(`#${w[i]}`).addClass('keyboard_bad'); } else if (res[i] == 'mid') {
         $(`#${w[i]}`).removeClass('keyboard_bad');
-      } else if (res[i] == 'Y') {
+      } else if (res[i] == 'good') {
         $(`#${w[i]}`).removeClass('keyboard_bad');
         $(`#${w[i]}`).addClass('keyboard_good');
       }

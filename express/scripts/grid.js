@@ -1,6 +1,7 @@
 class Grid {
 	update() {
-		this.red_grid_outline();
+		if(this.guesses[this.current_line].length === this.width)
+			this.red_grid_outline();
 	}
 	red_grid_outline() {
 		var value = !this.is_guess_valid();
@@ -8,7 +9,6 @@ class Grid {
 			if(value===true)
 				element.addClass("grid_notreal");
 			else {
-				console.log("not vlaue");
 				element.removeClass("grid_notreal");
 			}
 		});
@@ -59,18 +59,25 @@ class Grid {
 		}
 	}
 	submit() {
-		if(this.guesses[this.current_line].length === this.width) {
-			console.log("submitting!");
+		if(this.is_guess_valid() && this.correct_word) {
+			var guess = this.guesses[this.current_line];
+			this.set_colors(this.current_line, compare(guess, this.correct_word, false));
+			this.current_line++;
 		}
 	}
 	set_wordlist(wordlist) {
 		this.wordlist = wordlist;
+	}
+	set_correct_word(word) {
+		this.correct_word = word;
 	}
 	is_guess_valid() {
 		var word = this.guesses[this.current_line];
 		if(word.length == this.width) {
 			if(!this.wordlist || !this.wordlist.includes(word))
 				return false;
+		} else {
+			return false;
 		}
 		return true;
 	}
@@ -100,18 +107,17 @@ class Grid {
 			}
 			this.matrix.push(entries);
 		}
-		
 	}
 };
 var test_grid;
 $(document).ready(function() {
 	test_grid = new Grid(5, 6);
 	// delete this function !! this is for testing!! this is bad!!
-	test_grid.set_colors(2, ["bad", "bad", "good", "mid", "bad"]);
 	test_grid.set_name("test");
 	test_grid.set_points(100);
 	test_grid.type_letter("t");
 	test_grid.type_letter("e");
 	test_grid.type_letter("v");
+	test_grid.set_correct_word("penis");
 	test_grid.backspace();
 });
