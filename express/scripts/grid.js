@@ -95,6 +95,8 @@ class Grid {
 		this.points.text("points: "+points);
 	}
 	type_letter(letter) {
+		if(this.guesses[this.current_line-1] == this.correct_word)
+			return;
 		this.guesses[this.current_line] += letter;
 		this.guesses[this.current_line] = this.guesses[this.current_line].substring(0, this.width);
 		this.set_text(this.guesses[this.current_line], this.current_line);
