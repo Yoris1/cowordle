@@ -143,13 +143,15 @@ class Game {
 		console.log("need to do validation here to avoid xss!");
 		player.guesses.push(guess);
 		this.players.forEach(element => {
-			element.socket.emit('guess', {
-				text: guess.toLowerCase(),
-				id: player.id,
-				nick: player.nick,
-				guess_id: player.guesses.length-1,
-				correct: this.word,
-			});
+			if(element !== player)  {
+				element.socket.emit('guess', {
+					text: guess.toLowerCase(),
+					id: player.id,
+					nick: player.nick,
+					guess_id: player.guesses.length-1,
+					correct: this.word,
+				});
+			}
 		})
 		if(player.guesses.length == this.maxGuesses || guess == this.word) {
 			this.tryEndRound();

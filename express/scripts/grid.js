@@ -1,4 +1,50 @@
+class GridManager {
+	get_grid(id) {
+		return this.grids[id];
+	}
+	create_grid(player_id, player_name) {
+		this.grids[player_id] = new Grid(5, 6);
+		this.grids[player_id].set_name(player_name);
+		if(this.wordlist) this.grids[player_id].set_wordlist(this.wordlist);
+		if(this.correct_word) this.grids[player_id].set_correct_word(this.correct_word);
+		if(player_id == "you") this.grids[player_id].toggle_text(true);
+		return this.grids[player_id];
+	}
+	set_correct_word(word) {
+		this.correct_word = word;
+		Object.values(this.grids).forEach(grid => {
+			grid.set_correct_word(word);
+		});
+	}
+	reset_grids() {
+		Object.values(this.grids).forEach(grid => {
+			grid.reset();
+		});
+	}
+	set_wordlist(wordlist) {
+		this.wordlist = wordlist;
+		Object.values(this.grids).forEach(grid => {
+			grid.set_wordlist(this.wordlist);
+		});
+	}
+	toggle_opponent_grid_visibility(value) {
+		Object.values(this.grids).forEach(grid => {
+			if(grid !== this.grids["you"]) {
+				grid.toggle_text(value);
+			}
+		});
+	}
+	constructor() {
+		this.grids = {};
+	}
+}
+
 class Grid {
+	set_guess(id, guess) {
+		this.guesses[id] = guess;
+		this.set_text(guess, id);
+		this.set_colors(id, compare(guess, this.correct_word, false));
+	}
 	update() {
 		if(this.guesses[this.current_line].length === this.width)
 			this.red_grid_outline();
@@ -25,8 +71,12 @@ class Grid {
 		});
 	}
 	reset() {
+		this.current_line = 0;
 		for(var i = 0; i < this.matrix.length; i++)
 			this._reset_row(i);
+		for(var i = 0; i < this.guesses.length; i++) {
+			this.guesses[i] = "";
+		}
 	}
 	set_text(text, row) {
 		if(!this.show_text && text !== "") return;
@@ -53,8 +103,8 @@ class Grid {
 		this.set_text(this.guesses[this.current_line], this.current_line);
 		this.update();
 	}
-	toggle_text() {
-		this.show_text = !this.show_text;
+	toggle_text(value) {
+		this.show_text = value;
 		for(var i = 0; i < this.guesses.length; i++) {
 			this.set_text(this.show_text?this.guesses[i]:"", i);
 		}
@@ -63,6 +113,7 @@ class Grid {
 		if(this.is_guess_valid() && this.correct_word) {
 			var guess = this.guesses[this.current_line];
 			this.set_colors(this.current_line, compare(guess, this.correct_word, true));
+			send_guess(guess);
 			this.current_line++;
 		}
 	}
@@ -83,7 +134,7 @@ class Grid {
 		return true;
 	}
 	constructor(width, height) {
-		this.show_text = true;
+		this.show_text = false;
 		this.width = width;
 
 		// create private guess matrix

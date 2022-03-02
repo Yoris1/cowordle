@@ -34,13 +34,13 @@ function presskey(letter) {
 	if(is_started !== true) return;
 	switch(letter.toLowerCase()) {
 		case "backspace":
-			grids["you"].backspace();
+			gridManager.get_grid("you").backspace();
 			break;
 		case "enter":
-			grids["you"].submit();
+			gridManager.get_grid("you").submit();
 			break;
 		default:
-			grids["you"].type_letter(letter.toLowerCase());
+			gridManager.get_grid("you").type_letter(letter.toLowerCase());
 	}
 }
 

@@ -1,16 +1,21 @@
-var grids = {};
-
+var gridManager = new GridManager();
 var socket;
+function send_guess(guess) {
+	socket.emit('guess', guess);
+}
 function createSocket(id) {
 	socket = io(window.location.href);
+	socket.on('guess', function(data) {
+		gridManager.set_correct_word(data.correct);
+		console.log("set correct word for all grids");
+		gridManager.get_grid(data.id).set_guess(data.guess_id, data.text);
+	})
 	socket.on('connect', function() {
 		socket.emit('join', {'id': id, 'nick': $('#nick').val()});
 	});
-
 	socket.on('add_player', function(player) {
 		var name = player.nick;
 		console.log(`Adding player ${name}`);
-		
 		if(player.you == true) {
 			name += " (you)"
 			player.id = "you";
@@ -20,38 +25,27 @@ function createSocket(id) {
 				if(!is_started) $('#startbtn').show();
 			}
 		}
-		grids[player.id] = new Grid(5, 6);
-		grids[player.id].set_name(name);
+		gridManager.create_grid(player.id, name)
+		if(player.points > 0) gridManager.get_grid(player.id).set_points(player.points);
 	});
-
 	socket.on('start', function(data) {
-		$('#keyboard').show();
 		console.log(data);
-		Object.values(grids).forEach(grid => {
-			grid.set_correct_word(data.word)
-		})
-		is_started = true;
-		guess = 0;
-		Object.values(grids).forEach(grid => {
-			grid.reset();
-		})
+		$('#keyboard').show();
+		gridManager.reset_grids();
+		gridManager.set_correct_word(data.word);
+		gridManager.toggle_opponent_grid_visibility(false);
 		resetKeyboard();
+		is_started = true;
 	});
-
 	socket.on('wordlist', function(data) {
 		console.log('wordlist');
-		Object.values(grids).forEach(grid => {
-			grid.set_wordlist(data);
-		})
+		gridManager.set_wordlist(data);
 	});
-
+	
 	socket.on('endround', points => {
 		console.log(points);
-		points.forEach(element => {
-			$(`#${element.id}-playerlist-points`).text("points: " + element.points);
-		});
 		is_started = false;
-		console.log("Should reveal guesses of both players. and display a 5. 4. 3. 2. 1. timer on screen");
+		gridManager.toggle_opponent_grid_visibility(true);
 	});
 
 	socket.on('endgame', () => {
