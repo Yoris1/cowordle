@@ -56,6 +56,7 @@ function createSocket(id) {
 	socket.on('wordlist', function(data) {
 		console.log("Got wordlist!!");
 		wordlist = data;
+		test_grid.set_wordlist(data);
 	});
 
 	socket.on('endround', points => {

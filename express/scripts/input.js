@@ -30,23 +30,18 @@ function verifyWord() {
 	}
 }
 
-function typeLetter(letter) {
-	if(is_started !== true) return;
-	user_word += letter.toLowerCase();
-	user_word = user_word.slice(0, grids['test'].max)
-	set_grid_text('test', guess, user_word);
-}
-
 function presskey(letter) {
-	if(letter.toLowerCase() == "backspace") {
-		user_word = user_word.slice(0, -1);
-		set_grid_text('test', guess, user_word); 
+	if(is_started !== true) return;
+	switch(letter.toLowerCase()) {
+		case "backspace":
+			test_grid.backspace();
+			break;
+		case "enter":
+			test_grid.submit();
+			break;
+		default:
+			test_grid.type_letter(letter.toLowerCase());
 	}
-	else if(letter.toLowerCase() == "enter")
-		submitWord();
-	else
-		typeLetter(letter);
-	verifyWord();
 }
 
 $(document).ready(function() {

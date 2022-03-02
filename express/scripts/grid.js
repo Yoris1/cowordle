@@ -1,25 +1,39 @@
-// create a grid type, because i hate how javascript looks when i dont have actual types defined
-
 class Grid {
+	update() {
+		this.red_grid_outline();
+	}
+	red_grid_outline() {
+		var value = !this.is_guess_valid();
+		this.matrix[this.current_line].forEach(element => {
+			if(value===true)
+				element.addClass("grid_notreal");
+			else {
+				console.log("not vlaue");
+				element.removeClass("grid_notreal");
+			}
+		});
+	}
 	set_colors(row, colors) {
 		for(var i = 0; i < colors.length; i++) {
 			this.matrix[row][i].addClass("grid_"+colors[i]);
 		}
 	}
-	reset_row(row) {
+	_reset_row(row) {
 		this.matrix[row].forEach(element => {
 			element.removeClass("grid_good grid_bad grid_mid grid_notreal");
 			element.text('');
-		})
+		});
 	}
 	reset() {
-		for(var i = 0; i < this.matrix.length; i++) {
-			this.reset_row(i);
-		}
+		for(var i = 0; i < this.matrix.length; i++)
+			this._reset_row(i);
 	}
 	set_text(text, row) {
-		for(var i = 0; i < text.length; i++)
+		var i = 0;
+		for(; i < text.length; i++)
 			this.matrix[row][i].text(text[i]);
+		for(; i < this.width; i++)
+			this.matrix[row][i].text('');
 	}
 	set_name(name) {
 		this.name.text(name);
@@ -27,7 +41,50 @@ class Grid {
 	set_points(points) {
 		this.points.text("points: "+points);
 	}
+	type_letter(letter) {
+		this.guesses[this.current_line] += letter;
+		this.guesses[this.current_line] = this.guesses[this.current_line].substring(0, this.width);
+		this.set_text(this.guesses[this.current_line], this.current_line);
+		this.update();
+	}
+	backspace() {
+		this.guesses[this.current_line] = this.guesses[this.current_line].slice(0, -1);
+		this.set_text(this.guesses[this.current_line], this.current_line);
+		this.update();
+	}
+	toggle_text() {
+		this.show_text = !this.show_text;
+		for(var i = 0; i < this.guesses.length; i++) {
+			this.set_text(this.show_text?this.guesses[i]:"", i);
+		}
+	}
+	submit() {
+		if(this.guesses[this.current_line].length === this.width) {
+			console.log("submitting!");
+		}
+	}
+	set_wordlist(wordlist) {
+		this.wordlist = wordlist;
+	}
+	is_guess_valid() {
+		var word = this.guesses[this.current_line];
+		if(word.length == this.width) {
+			if(!this.wordlist || !this.wordlist.includes(word))
+				return false;
+		}
+		return true;
+	}
 	constructor(width, height) {
+		this.show_text = true;
+		this.width = width;
+
+		// create private guess matrix
+		this.guesses = [];
+		for(var i = 0; i < height; i++) {
+			this.guesses[i] = "";
+		}
+		this.current_line = 0;
+
 		//generate matrix
 		this.container = $(`<div class="grid">`).appendTo($("#gameboard")); // grid div
 		this.name = $(`<p class="boardname">`).appendTo(this.container);
@@ -43,74 +100,18 @@ class Grid {
 			}
 			this.matrix.push(entries);
 		}
-		// =============
+		
 	}
 };
-
+var test_grid;
 $(document).ready(function() {
+	test_grid = new Grid(5, 6);
 	// delete this function !! this is for testing!! this is bad!!
-	var grid = 	new Grid(5, 6);
-	grid.set_text("test", 0); 
-	grid.set_colors(2, ["bad", "bad", "good", "mid", "bad"]);
-	grid.set_name("test");
-	grid.set_points(100);
-})
-
-
-var grids = {}
-
-function resetGrids() {
-	$('.grid').each(function () {
-		for(var i = 0; i < 6; i++) {
-			var grid_id = $(this).attr("id");
-			set_grid_colors(grid_id, i, 'RRRRR');
-			set_grid_text(grid_id, i, '');
-		}
-	})
-}
-
-function create_grid(id, dimensions, name) {
-	grids[id] = {};
-	grids[id].row = 0;
-	grids[id].max = 5;
-	
-	$(`<div class="grid" id=${id}>`).appendTo($("#gameboard"));
-	for(var i = 0; i < +dimensions+1; i++) {
-		row = $(`<div class=grid_row id='${id}_${i}'>`);
-		$(`#${id}`).append(row);
-		for(var j = 0; j < +dimensions; j++)
-			$(`<div class=grid_entry>`).appendTo(row);
-	}
-	$(`<p class="boardname">`).text(name).prependTo("#"+id);
-}
-
-function set_grid_text(id, row, word) {
-	var i = 0;
-	$(`#${id}_${row}`).children('div').each(function() {
-		if(word.length <= i)
-			$(this).text(' ');
-		else
-			$(this).text(word[i++]);
-	})
-}
-
-function set_grid_colors(id, row, word) {
-	var i = 0;
-	$(`#${id}_${row}`).children('div').each(function() {
-		var char =word[i++];
-		console.log(`Doing switch statement for character ${char}`) ;
-		$(this).removeClass("grid_notreal");
-		// should just separate not real words out into a separate function.
-		if(char == 'N') 
-			$(this).addClass("grid_bad");
-		else if(char == 'M')
-			$(this).addClass("grid_mid");
-		else if(char == 'Y')
-			$(this).addClass("grid_good");
-		else if(char == 'F')
-			$(this).addClass("grid_notreal");
-		else if(char == 'R') {
-			$(this).removeClass("grid_good grid_bad grid_mid grid_notreal");
-		}
-	})
-}
+	test_grid.set_colors(2, ["bad", "bad", "good", "mid", "bad"]);
+	test_grid.set_name("test");
+	test_grid.set_points(100);
+	test_grid.type_letter("t");
+	test_grid.type_letter("e");
+	test_grid.type_letter("v");
+	test_grid.backspace();
+});
