@@ -10,7 +10,7 @@
 	--guess_doesntinclude: #3a3a3c;
 	--guess_correct: #538d4e;
 
-	--grid_background: #121213;
+	--grid_background: var(--background);
 	--grid_outline_normal: #3a3a3c;
 	--grid_outline_bad: red;
 	--grid_outline_used: rgba(0, 0, 0, 0);
