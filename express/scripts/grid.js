@@ -46,11 +46,10 @@ class Grid {
 		this.set_colors(id, compare(guess, this.correct_word, false));
 	}
 	update() {
-		if(this.guesses[this.current_line].length === this.width)
-			this.red_grid_outline();
+		this.red_grid_outline();
 	}
 	red_grid_outline() {
-		var value = !this.is_guess_valid();
+		var value = !this.is_guess_valid() && this.guesses[this.current_line].length === this.width;
 		this.matrix[this.current_line].forEach(element => {
 			if(value===true)
 				element.addClass("grid_notreal");
