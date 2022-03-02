@@ -19,6 +19,7 @@ class Game {
 	bestOf : number = 2;
 	gamesPlayed : number = 0;
 	wordlist: {[key: number]: string[]};
+	wordlist_winning: {[key: number]: string[]};
 
 	host : Player;
 	isStarted : boolean = false;
@@ -38,7 +39,7 @@ class Game {
 		})
 	}
 	rollWord() {
-		var wordlist = this.wordlist[this.guessLength];
+		var wordlist = this.wordlist_winning[this.guessLength];
 		this.word = wordlist[Math.floor(Math.random()*wordlist.length)];
 	}
 
@@ -172,11 +173,12 @@ class Game {
 			this.begin_game();
 		}
 	}
-	constructor(wordlist: {[key: number]: string[]}) {
+	constructor(wordlist: {[key: number]: string[]}, wordlist_winning: {[key: number]: string[]}) {
 		this.isStarted = false;
 		this.id = generateId();
 		this.guessLength = 5;
 		this.wordlist = wordlist;
+		this.wordlist_winning = wordlist_winning;
 		this.gamesPlayed = 0;
 	}
 };
@@ -200,9 +202,11 @@ export class GameManager {
 	games :{ [key: string]: Game } = {};
 	players :{[key: string]: Player} = {};
 	wordlists :{[key: number]: string[]} = {};
+	winning_wordlists :{[key: number]: string[]} = {};
 
 	constructor(socket: Server) {
-		this.createWordlists();
+		this.wordlists = this.createWordlists("dictionary.txt");
+		this.winning_wordlists = this.createWordlists("winning_words.txt");
 		this.games = {};
 		socket.on('connection', (client) => {
 			var p = new Player();
@@ -234,17 +238,19 @@ export class GameManager {
 			})
 		});
 	}
-	createWordlists() {
-		const wordArray = readFileSync(path.join(path.dirname(__dirname), "dictionaries", "dictionary.txt"), 'utf8').split('\n');
+	createWordlists(dictionary: string) {
+		const wordArray = readFileSync(path.join(path.dirname(__dirname), "dictionaries", dictionary), 'utf8').split('\n');
+		var wordlists :{[key: number]: string[]} = {};
 		wordArray.forEach((word) => {
-			if (!this.wordlists[word.length]) {
-				this.wordlists[word.length] = [];
+			if (!wordlists[word.length]) {
+				wordlists[word.length] = [];
 			}
-			this.wordlists[word.length].push(word);
+			wordlists[word.length].push(word);
 		});
+		return wordlists;
 	}
 	createRoom() : string {
-		var room : Game = new Game(this.wordlists);
+		var room : Game = new Game(this.wordlists, this.winning_wordlists);
 		this.games[room.id] = room;
 		return room.id;
 	}
