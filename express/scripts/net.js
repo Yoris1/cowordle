@@ -12,8 +12,6 @@ function word_exists() {
 function createSocket(id) {
 	socket = io(window.location.href);
 	socket.on('guess', function(data) {
-		gridManager.set_correct_word(data.correct);
-		console.log("set correct word for all grids");
 		gridManager.get_grid(data.id).set_guess(data.guess_id, data.text);
 	})
 	socket.on('connect', function() {
