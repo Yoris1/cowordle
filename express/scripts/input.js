@@ -41,10 +41,14 @@ function presskey(letter) {
 		default:
 			gridManager.get_grid("you").type_letter(letter.toLowerCase());
 	}
-	typingCheck.typed = true;
+	typingCheck.received_input();
 }
 class TypingCheck {
-	update_typing_status() {
+	received_input() {
+		this.typed = true;
+		this.force_update();
+	}
+	_update_typing_status() {
 		if(this.typed) {
 			if(!this._istyping) {
 				send_typing_status(true);
@@ -60,12 +64,19 @@ class TypingCheck {
 		}
 		this.typed = false;
 	}
+	force_update() {
+		this._update_typing_status();
+		if(this.interval)
+			clearInterval(this.interval);
+		this.interval = setInterval(() => {
+			this._update_typing_status();	
+		}, 5000);
+
+	}
 	constructor() {
 		this.typed = false;
 		this._istyping = false;
-		setInterval(() => {
-			this.update_typing_status();	
-		}, 5000);
+		this.force_update();
 	}
 }
 const typingCheck = new TypingCheck(); 
