@@ -44,9 +44,33 @@ class GridManager {
 
 class Grid {
 	set_guess(id, guess) {
+		this.current_line = id+1;
 		this.guesses[id] = guess;
 		this.set_text(guess, id);
 		this.set_colors(id, compare(guess, this.correct_word, false));
+	}
+	_typing_frame(i) {
+		if(!this.animate_typing) {
+			for(var j = 0; j < this.width; j++)
+				this.matrix[this.current_line][j].removeClass("grid_type");
+			return;
+		}
+		i = i%(this.width+1);
+		if(i == 0)i = 1;
+		var j = 0;
+		for(; j < i; j++) {
+			this.matrix[this.current_line][j].addClass("grid_type");
+		}
+		for(; j < this.width; j++) {
+			this.matrix[this.current_line][j].removeClass("grid_type");
+		}
+		setTimeout(() => {
+			this._typing_frame(i+1);
+		}, 500);
+	}
+	toggle_typing_indicator(value) {
+		this.animate_typing = value;
+		this._typing_frame(0);
 	}
 	update() {
 		this.red_grid_outline();
@@ -149,6 +173,8 @@ class Grid {
 		return true;
 	}
 	constructor(width, height) {
+		this.animate_typing = false;
+
 		this.show_text = false;
 		this.width = width;
 

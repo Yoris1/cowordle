@@ -47,12 +47,14 @@ class TypingCheck {
 	update_typing_status() {
 		if(this.typed) {
 			if(!this._istyping) {
+				send_typing_status(true);
 				console.log("sending typing start to server");
 			}
 			this._istyping = true;
 		} else {
 			if(this._istyping) {
 				console.log("sending typing end to server");
+				send_typing_status(false);
 				this._istyping = false;
 			}
 		}
@@ -98,4 +100,3 @@ $(document).ready(function() {
 	});
 
 });
-

@@ -9,13 +9,19 @@ function word_doesnt_exist() {
 function word_exists() {
 	socket.emit('fullword', false);
 }
+function send_typing_status(status) {
+	socket.emit('typing', status);
+}
 function createSocket(id) {
 	socket = io(window.location.href);
 	socket.on('guess', function(data) {
 		gridManager.get_grid(data.id).set_guess(data.guess_id, data.text);
-	})
+	});
 	socket.on('connect', function() {
 		socket.emit('join', {'id': id, 'nick': $('#nick').val()});
+	});
+	socket.on('typing', function(data) {
+		gridManager.get_grid(data.player_id).toggle_typing_indicator(data.status);
 	});
 	socket.on('add_player', function(player) {
 		var name = player.nick;

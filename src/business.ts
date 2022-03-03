@@ -23,11 +23,12 @@ class Game {
 
 	host : Player;
 	isStarted : boolean = false;
-	typing(initiator) {
+	set_typing_status(p: Player, status: any) {
 		this.players.forEach(player => {
-			if(player != initiator)
-				player.socket.emit("typing");
-		}) // should probably remake to make a list of players and which one is typing, but this should work for now. 
+			if(player != p) {
+				player.socket.emit("typing", {status: status, player_id: p.id});
+			}
+		});
 	}
 	wrongword(initiator, correct) {
 		this.players.forEach(player => {
@@ -231,14 +232,14 @@ export class GameManager {
 			client.on('guess', (data) => {
 				this.games[p.room].guess(p, data);
 			});
-			client.on('typing', () => {
-				this.games[p.room].typing(p);
-			})
 			client.on('fullword', (correct) => {
 				this.games[p.room].wrongword(p, correct);
 			})
 			client.on('start', () => {
 				this.games[p.room].start(p);
+			})
+			client.on('typing', (status) => {
+				this.games[p.room].set_typing_status(p, status);
 			})
 			client.once('disconnect', () => {
 				this.games[p.room].removePlayer(p);
