@@ -59,7 +59,56 @@ html {
 }
 
 #join_form {
+	margin-top: 3%;
 	width: 24em;
 	margin-left: auto;
 	margin-right: auto;
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
+}
+#room_id {
+	display: flex;
+	justify-content: center;
+	width: 100%;
+}
+.btn {
+	border-radius: 8px;
+	margin-top: 3%;
+	height: 1.3em;
+	width: 100%;
+	margin-left: auto;
+	margin-right: auto;
+	background-color: var(--guess_correct);
+	text-align: center;
+	vertical-align: middle;
+	font-size: 3em;
+	margin-bottom: 0;
+}
+#create {
+	margin-top: 0;
+}
+
+#room_or {
+	font-size: 3em;
+	text-align: center;
+	margin: 0 0 0 0;
+	margin-bottom: 0;
+}
+
+#name {
+	vertical-align: middle;	
+	margin-bottom: 40px;
+	display: flex;
+	justify-content: center;
+}
+.username_letter {
+	display: inline-block;
+	background-color: var(--grid_outline_normal);
+	width: 1.3em;
+	height: 1.3em;
+	margin-right: 3px;
+	font-size: 2em;
+	border-radius: 8px;
+	text-align: center;
 }
