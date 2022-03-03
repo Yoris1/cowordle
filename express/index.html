@@ -16,9 +16,6 @@
 	<script src="./scripts/alert.js"></script>
 	<script>	
 		var is_started = false;
-		$(document).ready(function() {
-			$("#gameboard").hide();
-		})
 	</script>
 	<link rel="stylesheet" href="./header.css">
 	<link rel="stylesheet" href="./variables.css">
@@ -51,7 +48,7 @@
 		<button id="join">join</button>
 	</div>
 
-	<div id="gameboard"> </div>
+	<div id="gameboard" hidden> </div>
 	<button id='startbtn' hidden>start</button>
 	<div id="keyboard" hidden></div>
 	<div id="roominfo" hidden>
