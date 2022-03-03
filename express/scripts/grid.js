@@ -48,29 +48,32 @@ class Grid {
 		this.guesses[id] = guess;
 		this.set_text(guess, id);
 		this.set_colors(id, compare(guess, this.correct_word, false));
+		this._animation_frame = 0;
 	}
-	_typing_frame(i) {
-		if(!this.animate_typing) {
-			for(var j = 0; j < this.width; j++)
-				this.matrix[this.current_line][j].removeClass("grid_type");
-			return;
+	_typing_frame() {
+		if(!this.matrix[this.current_line] || this.guesses[this.current_line-1] == this.correct_word) {
+			this.animate_typing = false;
+			return; // out of bounds;
 		}
-		i = i%(this.width+1);
-		if(i == 0)i = 1;
+
+		this._animation_frame++;
+		this._animation_frame = this._animation_frame%(this.width+1);
+		if(this._animation_frame == 0)this._animation_frame = 1;
+		if(!this.animate_typing) this._animation_frame = 0;
+		
 		var j = 0;
-		for(; j < i; j++) {
-			this.matrix[this.current_line][j].addClass("grid_type");
-		}
-		for(; j < this.width; j++) {
-			this.matrix[this.current_line][j].removeClass("grid_type");
-		}
+		for(; j < this._animation_frame; j++) this.matrix[this.current_line][j].addClass("grid_type");
+		for(; j < this.width; j++) this.matrix[this.current_line][j].removeClass("grid_type");
+		
+		if(!this.animate_typing) return;
 		setTimeout(() => {
-			this._typing_frame(i+1);
+			this._typing_frame();
 		}, 500);
 	}
 	toggle_typing_indicator(value) {
 		this.animate_typing = value;
-		this._typing_frame(0);
+		this._animation_frame = 0;
+		this._typing_frame();
 	}
 	update() {
 		this.red_grid_outline();

@@ -25,6 +25,9 @@
 	vertical-align: middle;
 	background-color: var(--grid_background);
 }
+.grid_notreal{
+	border-color: var(--grid_outline_bad);
+}
 .grid_type{
 	border-color: green;
 }
@@ -39,9 +42,6 @@
 .grid_mid {
 	border-color: var(--grid_outline_used);
 	background-color: var(--guess_includes);
-}
-.grid_notreal{
-	border-color: var(--grid_outline_bad);
 }
 
 .points {
