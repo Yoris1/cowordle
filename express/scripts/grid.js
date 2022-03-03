@@ -103,7 +103,7 @@ class Grid {
 	}
 	_reset_row(row) {
 		this.matrix[row].forEach(element => {
-			element.removeClass("grid_good grid_bad grid_mid grid_notreal");
+			element.removeClass("grid_good grid_bad grid_mid grid_notreal grid_type");
 			element.text('');
 		});
 	}
