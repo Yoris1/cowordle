@@ -29,7 +29,6 @@ function verifyWord() {
 		set_grid_colors('test', guess, "EEEEEEEEEEEEEEE");
 	}
 }
-
 function presskey(letter) {
 	if(is_started !== true) return;
 	switch(letter.toLowerCase()) {
@@ -42,7 +41,32 @@ function presskey(letter) {
 		default:
 			gridManager.get_grid("you").type_letter(letter.toLowerCase());
 	}
+	typingCheck.typed = true;
 }
+class TypingCheck {
+	update_typing_status() {
+		if(this.typed) {
+			if(!this._istyping) {
+				console.log("sending typing start to server");
+			}
+			this._istyping = true;
+		} else {
+			if(this._istyping) {
+				console.log("sending typing end to server");
+				this._istyping = false;
+			}
+		}
+		this.typed = false;
+	}
+	constructor() {
+		this.typed = false;
+		this._istyping = false;
+		setInterval(() => {
+			this.update_typing_status();	
+		}, 5000);
+	}
+}
+const typingCheck = new TypingCheck(); 
 
 $(document).ready(function() {
 	// create virtual keyboard
@@ -74,3 +98,4 @@ $(document).ready(function() {
 	});
 
 });
+
