@@ -3,6 +3,12 @@ var socket;
 function send_guess(guess) {
 	socket.emit('guess', guess);
 }
+function word_doesnt_exist() {
+	socket.emit('fullword', true);
+}
+function word_exists() {
+	socket.emit('fullword', false);
+}
 function createSocket(id) {
 	socket = io(window.location.href);
 	socket.on('guess', function(data) {
@@ -59,5 +65,8 @@ function createSocket(id) {
 		$('#startbtn').show();
 		console.log("Should show summary of game points now :mwah:");
 	});
+	socket.on('fullword', (data) => {
+		gridManager.get_grid(data.id).toggle_red_outline(data.guess_id, data.correct);
+	})
 
 }

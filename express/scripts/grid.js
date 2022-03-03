@@ -53,9 +53,20 @@ class Grid {
 	}
 	red_grid_outline() {
 		var value = !this.is_guess_valid() && this.guesses[this.current_line].length === this.width;
-		this.matrix[this.current_line].forEach(element => {
-			if(value===true)
+		this.toggle_red_outline(this.current_line, value);
+		if(value === true) {
+			this.last_wrong_word = true;
+			word_doesnt_exist();
+		} else if(this.last_wrong_word && this.last_wrong_word === true) {
+			this.last_wrong_word = false;
+			word_exists();
+		}
+	}
+	toggle_red_outline(line, value) {
+		this.matrix[line].forEach(element => {
+			if(value===true) {
 				element.addClass("grid_notreal");
+			}
 			else {
 				element.removeClass("grid_notreal");
 			}
