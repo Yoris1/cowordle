@@ -59,7 +59,6 @@ $(document).ready(function() {
 
 	// register virtual keyboard keys
 	$(".keyboard_key").each( function() {
-		console.log($(this).attr("id"));
 		$(this).on("click", function () {
 			var key = $(this).attr("id");
 			presskey(key);
