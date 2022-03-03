@@ -97,6 +97,12 @@ class Game {
 			p.socket.emit('remove_player', player.id);
 		})
 	}
+	shouldCloseLobby() : boolean {
+		if(this.players.length == 0)
+			return true;
+		return false;
+	}
+	
 	endRound() {
 		console.log("Ending round!! Need to reset state and send all the players the points");
 		var playerPoints = [];
@@ -235,6 +241,10 @@ export class GameManager {
 			})
 			client.once('disconnect', () => {
 				this.games[p.room].removePlayer(p);
+				if(this.games[p.room].shouldCloseLobby()) {
+					console.log("closing room "+p.room);
+					delete this.games[p.room];
+				}
 			})
 		});
 	}
