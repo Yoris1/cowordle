@@ -30,7 +30,10 @@ function verifyWord() {
 	}
 }
 function presskey(letter) {
-	if(is_started !== true) return;
+	if(is_started !== true)  {
+		$("<div class=\"username_letter\">").text(letter).appendTo($("#name"));
+		return;
+	}
 	switch(letter.toLowerCase()) {
 		case "backspace":
 			gridManager.get_grid("you").backspace();
