@@ -31,7 +31,11 @@ function verifyWord() {
 }
 function presskey(letter) {
 	if(is_started !== true)  {
-		$("<div class=\"username_letter\">").text(letter).appendTo($("#name"));
+		if(letter == "Backspace")
+			userName.backspace();
+		else
+			userName.type(letter);
+
 		return;
 	}
 	switch(letter.toLowerCase()) {

@@ -18,7 +18,7 @@ function createSocket(id) {
 		gridManager.get_grid(data.id).set_guess(data.guess_id, data.text);
 	});
 	socket.on('connect', function() {
-		socket.emit('join', {'id': id, 'nick': $('#nick').val()});
+		socket.emit('join', {'id': id, 'nick': userName.getName()});
 	});
 	socket.on('typing', function(data) {
 		gridManager.get_grid(data.player_id).toggle_typing_indicator(data.status);
