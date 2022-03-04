@@ -5,7 +5,7 @@ $(document).ready(function(){
 	});
 	$('#join').click(function(event) {
 		event.preventDefault();
-		joinRoom($('#roomid').val());
+		joinRoom(room_id);
 	});
 	$('#startbtn').on('click', function() {
 		socket.emit('start');

@@ -8,7 +8,7 @@ import escape = require('escape-html');
 const nanoid = require('nanoid');
 import {customAlphabet} from 'nanoid';
 import { textChangeRangeIsUnchanged } from "typescript";
-const generateId = customAlphabet("QWERTYUIOPASDFGHJKLZXCVBNM1234567890".toLowerCase(), 4);
+const generateId = customAlphabet("QWERTYUIOPASDFGHJKLZXCVBNM1234567890".toLowerCase(), 5);
 
 class Game {
 	word : string;
