@@ -3,6 +3,9 @@ class Name {
 		$("#name").empty();
 	}
 	type(letter) {
+		letter = letter.toLowerCase();
+		if(!this.allowed_name_letters.includes(letter)) return;
+		if(letter == " ") letter = "_";
 		if(this.clear_string && this.clear_string === true)  {
 			this.clear();
 			this.clear_string = false;
@@ -16,7 +19,7 @@ class Name {
 	}
 	test() {
 		this.clear_string = true;
-		var str = "your name";
+		var str = "username";
 		for(var i = 0; i < str.length; i++) {
 			$(`<div class="username_letter">`).text(str[i]).appendTo($("#name"));
 		}
@@ -39,6 +42,7 @@ class Name {
 		return str;
 	}
 	constructor() {
+		this.allowed_name_letters = "qwertyuiopasdfghjklzxcvbnm 1234567890_";
 		setTimeout(() => {
 			this.test();
 		}, 100);
