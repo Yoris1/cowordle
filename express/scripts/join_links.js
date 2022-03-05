@@ -14,6 +14,8 @@ $(document).ready(function() {
 	else {
 		var room = window.location.search.substring(6);
 		$("#invited").text("you've been invited to play on:");
+		$("#join").show();
+		$("#room_or").show();
 		console.log(`User joined with invite link to room: ${room}`);
 		room_id = room;
 		for(var i = 0; i < room.length; i++) {
