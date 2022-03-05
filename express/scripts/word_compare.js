@@ -1,10 +1,14 @@
 function compare(w, good, self) {
-  const res = ['bad', 'bad', 'bad', 'bad', 'bad'];
+  console.log(`comparing ${w} to ${good}`);
+  const res = [];
+  for(var i = 0; i < w.length; i++) {
+    res.push('bad');
+  }
   w = w.toLowerCase();
   good = good.toLowerCase();
   for (let id = 0; id < w.length; id++) {
     const letter = good[id];
-    for (let j = 0; j < w.length; j++) {
+    for (let j = 0; j < good.length; j++) {
       const id1 = id + j;
       const id2 = id - j;
       if ((w[id1] && w[id1] == letter)) {
