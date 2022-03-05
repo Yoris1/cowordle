@@ -55,11 +55,14 @@
 	border-radius: var(--border_radius);
 	text-align: center;
 }
-.username_letter_yellow {
+.username_mid {
 	background-color: var(--guess_includes);
 }
-.username_letter_green {
+.username_good {
 	background-color: var(--guess_correct);
+}
+.username_bad {
+	background-color: var(--guess_doesntinclude);
 }
 #invited {
 	color: var(--foreground_alt);

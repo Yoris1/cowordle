@@ -1,6 +1,10 @@
 class Name {
-	create_letter() {
-		return $(`<div class="username_letter ${Math.random()<0.2?"username_letter_green":""} ${Math.random()<0.1?"username_letter_yellow":""}">`);
+	create_letter(letter) {
+		if(!this.letters) {
+			return $(`<div class="username_letter">`).text(letter);
+		}
+		var res = compare(this.getName(), "cat_cafe_sim", false);
+		return $(`<div class="username_letter username_${res[res.length-1]}">`).text(letter);
 	}
 	type(letter) {
 		letter = letter.toLowerCase();
@@ -11,8 +15,8 @@ class Name {
 		this.remove_placeholder();
 
 		this.letters.push(letter);
-		this.elements.push(this.create_letter());
-		this.elements[this.elements.length-1].text(letter).appendTo($("#name"));
+		this.elements.push(this.create_letter(letter));
+		this.elements[this.elements.length-1].appendTo($("#name"));
 
 		localStorage.setItem("name", this.getName());
 	}
@@ -22,7 +26,7 @@ class Name {
 		this.placeholder_active = true;
 		var str = "username";
 		for(var i = 0; i < str.length; i++) {
-			this.create_letter().text(str[i]).appendTo($("#name"));
+			this.create_letter(str[i]).appendTo($("#name"));
 		}
 	}
 	remove_placeholder() {
