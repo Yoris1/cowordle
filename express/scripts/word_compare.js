@@ -1,25 +1,32 @@
 function compare(w, good, self) {
-  console.log(`comparing ${w} to ${good}`);
+  good = `${good}`.toLowerCase(); // copy string just in case.
+  w = w.toLowerCase();
+
   const res = [];
   for(var i = 0; i < w.length; i++) {
     res.push('bad');
   }
-  w = w.toLowerCase();
-  good = good.toLowerCase();
-  for (let id = 0; id < w.length; id++) {
-    const letter = good[id];
-    for (let j = 0; j < good.length; j++) {
-      const id1 = id + j;
-      const id2 = id - j;
-      if ((w[id1] && w[id1] == letter)) {
-        res[id1] = j == 0 ? 'good' : 'mid';
-        break;
-      } else if ((w[id2] && w[id2] == letter)) {
-        res[id2] = j == 0 ? 'good' : 'mid';
-        break;
-      }
+
+  for (var id = 0; id < w.length; id++) {
+    if(w[id] == good[id]) {
+      res[id] = 'good';
+
+      var arr = good.split('');
+      arr[id] = ';';
+      good = arr.join('');
     }
   }
+  for (let id = 0; id < w.length; id++) {
+    var index = good.indexOf(w[id]);
+    if(index >= 0 && good[id] != ';') {
+      res[id] = 'mid';
+
+      var arr = good.split('');
+      arr[index] = '.';
+      good = arr.join('');
+    }
+  }
+  
   if (self === true) {
     for (let i = 0; i < w.length; i++) {
       if (res[i] == 'bad' && !($(`#${w[i]}`).hasClass('keyboard_good'))) { $(`#${w[i]}`).addClass('keyboard_bad'); } else if (res[i] == 'mid') {
