@@ -1,39 +1,36 @@
 #keyboard {
 	text-align: center;
-	width: 600px;
-	height: 200px;
+	width: var(--keyboard_width);
+	height: var(--keyboard_height);
 	
 	position: absolute;
-	margin-left: auto;
-	margin-right: auto;
+	margin: 0 auto 0 auto;
 	right: 0;
 	left: 0;
-	bottom: 10%;
+	bottom: 2%;
 }
 .keyboard_row {
 	margin-top: var(--keyboard_key_margin);
 	height: calc(100%/3);
-
 	width: 100%;
 }
 .keyboard_key{ 
 	display: inline-block;
-	
 	height: 100%;
-	width: var(--keyboard_key_width);
-	margin-left: var(--keyboard_key_margin);
+}
+
+.keyboard_key {
+	font-size: var(--keyboard_font_size);
+	border-radius: var(--keyboard_border_radius);
 	
-	font-size: 30px;
-	border-radius: 10%;
+	width: var(--keyboard_key_width);
+	margin-left: calc(var(--keyboard_key_margin)/2);
+	margin-right: calc(var(--keyboard_key_margin)/2);
 }
 
-#enter {
-	width: calc(var(--keyboard_key_width)*1.55);
+#enter, #backspace {
+	width: var(--keyboard_long_width);
 }
-#backspace {
-	width: calc(var(--keyboard_key_width)*1.55);
-}
-
 
 .keyboard_key {
 	background-color: #818384;

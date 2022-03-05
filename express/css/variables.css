@@ -4,7 +4,12 @@
 	--foreground_alt: rgb(200, 200, 200);
 	
 	--keyboard_key_width: calc(100%/12);
+	--keyboard_long_width: calc(var(--keyboard_key_width)*1.55);
 	--keyboard_key_margin: calc(var(--keyboard_key_width)/12);
+	--keyboard_border_radius: 10%;
+	--keyboard_font_size: 30px;
+	--keyboard_width: 600px;
+	--keyboard_height: 200px;
 
 	--guess_includes: #b59f3b;
 	--guess_doesntinclude: #3a3a3c;
