@@ -1,48 +1,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Supermercado+One&display=swap');
-
 body {
 	background-color: var(--background);
 	color: var(--foreground);
-}
-
-
-#roominfo {
-	text-align: right;
+	font-family: 'Supermercado One';
 }
 #gameboard {
 	width: 100%;
 	display: flex;
 	justify-content: center;
 }
-
-#alertbox {
-	width: 20%;
-	font-size: 50px;
-	height: 5em;
-	min-width: 6em;
-	background-color: red;
-	position: absolute;
-	left: 0;
-	right: 0;
-	margin-left: auto;
-	margin-right: auto;
-	opacity: 1;
-	top: -500px;
-}
-
-#alerttext {
-	margin-top:5%;
-}
-
-.boardname {
-	text-align: center;
-	font-size: 200%;
-	margin-bottom: 0;
-}
-
-html {
-	font-family: 'Supermercado One';
-
+#roominfo {
+	text-align: right;
 }
 .unselectable {
     -webkit-touch-callout: none;
@@ -51,73 +19,4 @@ html {
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
-}
-
-.playerpoints {
-	text-align: center;
-	margin-top: 0;
-}
-
-#join_form {
-	margin-top: 3%;
-	width: 24em;
-	margin-left: auto;
-	margin-right: auto;
-	display: flex;
-	justify-content: center;
-	flex-direction: column;
-}
-#room_id {
-	display: flex;
-	justify-content: center;
-	width: 100%;
-}
-.btn {
-	border-radius: 8px;
-	margin-top: 3%;
-	height: 1.3em;
-	width: 100%;
-	margin-left: auto;
-	margin-right: auto;
-	background-color: var(--guess_correct);
-	text-align: center;
-	vertical-align: middle;
-	font-size: 3em;
-	margin-bottom: 0;
-}
-#create {
-	margin-top: 0;
-}
-
-#room_or {
-	font-size: 3em;
-	text-align: center;
-	margin: 0 0 0 0;
-	margin-bottom: 0;
-	color: var(--foreground_alt);
-}
-
-#name {
-	vertical-align: middle;	
-	margin-bottom: 40px;
-	display: flex;
-	justify-content: center;
-}
-.username_letter {
-	display: inline-block;
-	background-color: var(--grid_outline_normal);
-	width: 1.3858em;
-	height: 1.3858em;
-	margin-right: 1.5px;
-	margin-left: 1.5px;
-	font-size: 2em;
-	border-radius: 8px;
-	text-align: center;
-}
-
-#invited {
-	color: var(--foreground_alt);
-	font-size: 1.7em;
-	text-align: center;
-	margin: 0 0 10px 0;
 }

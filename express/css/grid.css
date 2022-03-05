@@ -1,3 +1,8 @@
+.boardname {
+	text-align: center;
+	font-size: 200%;
+	margin-bottom: 0;
+}
 .grid {
 	display: inline-block;
 	width: 400px;
