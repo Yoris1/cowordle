@@ -46,7 +46,7 @@
 }
 .username_letter {
 	display: inline-block;
-	background-color: var(--grid_outline_normal);
+	background-color: var(--guess_doesntinclude);
 	width: 1.3858em;
 	height: 1.3858em;
 	margin-right: 1.5px;
@@ -54,6 +54,12 @@
 	font-size: 2em;
 	border-radius: var(--border_radius);
 	text-align: center;
+}
+.username_letter_yellow {
+	background-color: var(--guess_includes);
+}
+.username_letter_green {
+	background-color: var(--guess_correct);
 }
 #invited {
 	color: var(--foreground_alt);
