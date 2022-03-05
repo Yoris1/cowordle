@@ -21,7 +21,7 @@
 
 .keyboard_key {
 	font-size: var(--keyboard_font_size);
-	border-radius: var(--btn_border_radius);
+	border-radius: var(--border_radius);
 	
 	width: var(--keyboard_key_width);
 	margin-left: calc(var(--keyboard_key_margin)/2);
