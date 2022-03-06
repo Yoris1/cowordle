@@ -3,6 +3,7 @@ class Name {
 		if(!this.letters) return;
 		var res = compare(this.getName(), "cat_cafe_sim", false);
 		for(var i = 0; i < res.length; i++) {
+			this.elements[i].removeClass("username_bad username_mid username_good");
 			this.elements[i].addClass("username_"+res[i]);
 		}
 	}
@@ -42,6 +43,7 @@ class Name {
 		if(this.letters.length === 0) this.placeholder();
 		
 		localStorage.setItem("name", this.getName());
+		this.update_letter_colors();
 	}
 	getName() {
 		var str = ""; 
