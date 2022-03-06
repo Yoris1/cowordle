@@ -10,7 +10,11 @@ body {
 	justify-content: center;
 }
 #roominfo {
-	text-align: right;
+	text-align: left;
+	position: absolute;
+	right: 1%;
+	bottom: 2%;
+	width: 400px;
 }
 .unselectable {
     -webkit-touch-callout: none;
