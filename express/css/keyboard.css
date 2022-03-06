@@ -33,11 +33,11 @@
 }
 
 .keyboard_key {
-	background-color: #818384;
+	background-color: var(--keyboard_color_key);
 }
 .keyboard_good {
-	background-color: #538d4e;
+	background-color: var(--keyboard_color_good);
 }
 .keyboard_bad {
-	background-color: #3a3a3c;
+	background-color: var(--keyboard_color_bad);
 }

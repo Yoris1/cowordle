@@ -9,6 +9,10 @@
 	--keyboard_font_size: 30px;
 	--keyboard_width: 600px;
 	--keyboard_height: 200px;
+	--keyboard_color_key: #818384;
+	--keyboard_color_good: #538d4e;
+	--keyboard_color_bad: #3a3a3c;
+
 
 	--guess_includes: #b59f3b;
 	--guess_doesntinclude: #3a3a3c;
