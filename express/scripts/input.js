@@ -117,7 +117,9 @@ $(document).ready(function() {
 				svg.attr("width", width);
 				svg.attr("height", height);
 				var path = $(createSvgTag("path"));
-				path.attr("d", `M 0 ${height*0.5} L ${width*0.3} 0 H ${width} V ${height} L ${width*0.3} ${height} Z`);
+				path.attr("d", `M 0 ${height*0.5} L ${width*0.3} 0 H ${width} V ${height} L ${width*0.3} ${height} Z` +  // outline
+				` M ${width*0.45} ${height*0.2} L ${width*0.75} ${height*0.8} M ${width*0.45} ${height*0.8} L ${width*0.75} ${height*0.2}` //X
+				);
 				console.log(path);
 				path.appendTo(svg);
 				svg.appendTo(key);
