@@ -103,7 +103,7 @@ $(document).ready(function() {
 				id = char=='<'?'backspace':'enter';
 				char = char=='<'?'':'enter';
 			}
-			var key = $(`<div class="keyboard_key" id='${id}'>`);
+			var key = $(`<div class="keyboard_key unselectable" id='${id}'>`);
 			key.text(char).appendTo($("#keyboard_row_"+r));
 			if(char == '') {
 				var svg = $(createSvgTag("svg"));
