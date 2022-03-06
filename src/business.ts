@@ -229,8 +229,10 @@ export class GameManager {
 			this.players[p.id] = p;
 
   			client.on('join', (data) => {
-				if(!data.nick || !data.id) 
-					p.socket.emit('disconnect');
+				if(!data.id) {
+					p.socket.disconnect();
+					return;
+				}
 				p.setNick(escape(data.nick));
 				if(data.id && this.games[data.id]){
 					this.games[data.id].addPlayer(p);
