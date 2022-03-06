@@ -16,7 +16,7 @@
 }
 .keyboard_key{ 
 	display: inline-block;
-	line-height: 50px;
+	line-height: 62px;
 	vertical-align: middle;
 	height: 100%;
 }
@@ -45,6 +45,7 @@
 }
 
 .backspace_svg {
+	padding-right: 6px;
 	stroke-width: 3px;
 	overflow: visible;
 	color: white;
