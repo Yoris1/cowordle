@@ -1,7 +1,9 @@
 class Name {
+	color_placeholder = false;
+	username_correct = "cat_cafe_sim"
 	update_letter_colors() {
 		if(!this.letters) return;
-		var res = compare(this.getName(), "cat_cafe_sim", false);
+		var res = compare(this.getName(), this.username_correct, false);
 		for(var i = 0; i < res.length; i++) {
 			this.elements[i].removeClass("username_bad username_mid username_good");
 			this.elements[i].addClass("username_"+res[i]);
@@ -27,8 +29,16 @@ class Name {
 		if(this.placeholder_active && this.placeholder_active === true) return;
 		this.placeholder_active = true;
 		var str = "username";
+		var res = [];
+		if(this.color_placeholder === true) {
+			res = compare(str, this.username_correct, false);
+		} else {
+			for(var i = 0; i < str.length; i++) {
+				res.push('bad');
+			}
+		}
 		for(var i = 0; i < str.length; i++) {
-			$(`<div class="username_letter">`).text(str[i]).appendTo($("#name"));
+			$(`<div class="username_letter username_${res[i]}">`).text(str[i]).appendTo($("#name"));
 		}
 	}
 	remove_placeholder() {
