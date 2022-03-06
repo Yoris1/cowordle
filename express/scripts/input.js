@@ -88,6 +88,9 @@ class TypingCheck {
 }
 const typingCheck = new TypingCheck(); 
 
+function createSvgTag(tag) {
+	return document.createElementNS("http://www.w3.org/2000/svg", tag);
+}
 $(document).ready(function() {
 	// create virtual keyboard
 	var r =0;
@@ -95,9 +98,30 @@ $(document).ready(function() {
 		$('#keyboard').append($(`<div class="keyboard_row" id="keyboard_row_${++r}">`));
 		for(var i = 0; i < row.length; i++) {
 			var char = row[i];
-			if(char == '<' || char == '>')
-				char = char=='<'?'backspace':'enter';
-			$(`<div class="keyboard_key" id='${char}'>`).text(char).appendTo($("#keyboard_row_"+r));
+			var id = char;
+			if(char == '<' || char == '>') {
+				id = char=='<'?'backspace':'enter';
+				char = char=='<'?'':'enter';
+			}
+			var key = $(`<div class="keyboard_key" id='${id}'>`);
+			key.text(char).appendTo($("#keyboard_row_"+r));
+			if(char == '') {
+				var svg = $(createSvgTag("svg"));
+				svg.addClass("backspace_svg");
+				$('#keyboard').show();
+				var width = +key.css('width').slice(0, -2);
+				var height = width/4;
+				width -= 45;
+				console.log(`width :${width} height: ${height}`);
+				$('#keyboard').hide();
+				svg.attr("width", width);
+				svg.attr("height", height);
+				var path = $(createSvgTag("path"));
+				path.attr("d", `M 0 ${height*0.5} L ${width*0.3} 0 H ${width} V ${height} L ${width*0.3} ${height} Z`);
+				console.log(path);
+				path.appendTo(svg);
+				svg.appendTo(key);
+			}
 		}
 	});
 
