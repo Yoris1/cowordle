@@ -92,7 +92,8 @@ class Game {
 		console.log("If people complain about players getting removed its prolly this");
 		this.players.splice(this.players.indexOf(player), 1);
 		if(this.host == player && this.players.length > 0) {
-			this.host = this.players[0]; // need to fix this up on client side
+			this.host = this.players[0];
+			this.host.socket.emit('sethost', this.isStarted);
 		} else
 			this.host = undefined;
 		this.players.forEach(p => {
@@ -147,6 +148,8 @@ class Game {
 		var shouldEnd = true;
 		this.players.forEach(player => {
 			if(player.guesses.length != this.maxGuesses && player.guesses[player.guesses.length-1] != this.word)
+				shouldEnd = false;
+			if(player.guesses.length == 0)
 				shouldEnd = false;
 		})
 		if(shouldEnd === true)
