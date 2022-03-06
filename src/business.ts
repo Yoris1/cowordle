@@ -157,6 +157,8 @@ class Game {
 	}
 	guess(player: Player, guess: string) : void {
 		console.log("need to do validation here to avoid xss!");
+		console.log(`Escaping ${guess} str to be ${escape(guess)}`);
+		guess = escape(guess);
 		player.guesses.push(guess);
 		this.players.forEach(element => {
 			if(element !== player)  {
@@ -241,7 +243,7 @@ export class GameManager {
 			})
 			client.on('fullword', (correct) => {
 				if(p && p.room && this.games[p.room])
-					this.games[p.room].wrongword(p, correct);
+					this.games[p.room].wrongword(p, correct?true:false);
 			})
 			client.on('start', () => {
 				if(p && p.room && this.games[p.room])
@@ -249,7 +251,7 @@ export class GameManager {
 			})
 			client.on('typing', (status) => {
 				if(p && p.room && this.games[p.room])
-					this.games[p.room].set_typing_status(p, status);
+					this.games[p.room].set_typing_status(p, status?true:false);
 			})
 			client.once('disconnect', () => {
 				if(p && p.room && this.games[p.room]) {
