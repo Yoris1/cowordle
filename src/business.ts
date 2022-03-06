@@ -227,29 +227,37 @@ export class GameManager {
 			this.players[p.id] = p;
 
   			client.on('join', (data) => {
+				if(!data.nick || !data.id) 
+					p.socket.emit('disconnect');
 				p.setNick(escape(data.nick));
 				if(data.id && this.games[data.id]){
 					this.games[data.id].addPlayer(p);
 				}
 				console.log(data);
-			});
+			})
 			client.on('guess', (data) => {
-				this.games[p.room].guess(p, data);
-			});
+				if(p && p.room && this.games[p.room])
+					this.games[p.room].guess(p, data);
+			})
 			client.on('fullword', (correct) => {
-				this.games[p.room].wrongword(p, correct);
+				if(p && p.room && this.games[p.room])
+					this.games[p.room].wrongword(p, correct);
 			})
 			client.on('start', () => {
-				this.games[p.room].start(p);
+				if(p && p.room && this.games[p.room])
+					this.games[p.room].start(p);
 			})
 			client.on('typing', (status) => {
-				this.games[p.room].set_typing_status(p, status);
+				if(p && p.room && this.games[p.room])
+					this.games[p.room].set_typing_status(p, status);
 			})
 			client.once('disconnect', () => {
-				this.games[p.room].removePlayer(p);
-				if(this.games[p.room].shouldCloseLobby()) {
-					console.log("closing room "+p.room);
-					delete this.games[p.room];
+				if(p && p.room && this.games[p.room]) {
+					this.games[p.room].removePlayer(p);
+					if(this.games[p.room].shouldCloseLobby()) {
+						console.log("closing room "+p.room);
+						delete this.games[p.room];
+					}
 				}
 			})
 		});
