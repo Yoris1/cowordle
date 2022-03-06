@@ -14,9 +14,9 @@ var gameManager : GameManager = new GameManager(io);
 var obfuscated_js = "";
 function obfuscate_js() {
 	var javascript = "";
-	var filenames = readdirSync("./express/scripts");
+	var filenames = readdirSync("./scripts");
 	filenames.forEach((file) => {
-		javascript += readFileSync(`./express/scripts/${file}`, {encoding:'utf8', flag:'r'});
+		javascript += readFileSync(`./scripts/${file}`, {encoding:'utf8', flag:'r'});
 		javascript += `\n`;
 	});
 	var obfuscated = obfuscator.obfuscate(javascript);
