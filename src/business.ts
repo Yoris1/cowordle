@@ -98,6 +98,7 @@ class Game {
 		this.players.forEach(p => {
 			p.socket.emit('remove_player', player.id);
 		})
+		this.tryEndRound();
 	}
 	shouldCloseLobby() : boolean {
 		if(this.players.length == 0)
