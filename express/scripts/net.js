@@ -69,6 +69,7 @@ function createSocket(id) {
 		});
 		is_started = false;
 		gridManager.toggle_opponent_grid_visibility(true);
+		alert(gridManager.correct_word);
 	});
 
 	socket.on('endgame', () => {

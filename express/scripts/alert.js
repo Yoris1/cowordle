@@ -1,18 +1,17 @@
-var running = false;
-function alert(text) {
-	if(running === true) return;
-	running = true;
-	$("#alerttext").text(text);
-	$("#alertbox").fadeIn();
-	$("#alertbox").css('top', '0px');
+function alert(text, fadeout=1) {
+	var box = $(`<div id="alertbox">`);
+	if(text.length > 15) {
+		box.css("line-height", "40px");
+	} else {
+		box.css("line-height", "80px");
+	}
+	box.text(text);
+	box.prependTo($("#alert_container"));
+	box.fadeIn();
 	setTimeout(() => {
-		$("#alertbox").fadeOut();
-		setTimeout(() => {
-			running = false;
-			$("#alertbox").css('top', '-500px');
-		}, 500);
-	}, 1000);
+		box.fadeOut(500, function() {
+			box.remove();
+		});
+	}, +fadeout*1000);
+	console.log(box);
 }
-$(document).ready(function() {
-	$("#alertbox").fadeOut();
-});

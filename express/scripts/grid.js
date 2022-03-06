@@ -157,6 +157,8 @@ class Grid {
 			this.set_colors(this.current_line, compare(guess, this.correct_word, true));
 			send_guess(guess);
 			this.current_line++;
+		} else if(this.guesses[this.current_line].length == this.width){
+			alert("not a word!");
 		}
 	}
 	set_wordlist(wordlist) {
