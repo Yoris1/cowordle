@@ -13,22 +13,8 @@ const server = http.createServer(app);
 const io = require('socket.io')(server);
 var gameManager : GameManager = new GameManager(io);
 
-var obfuscated_js = "";
-function obfuscate_js() {
-	var javascript = "";
-	var filenames = readdirSync("./scripts");
-	filenames.forEach((file) => {
-		javascript += readFileSync(`./scripts/${file}`, {encoding:'utf8', flag:'r'});
-		javascript += `\n`;
-	});
-	var obfuscated = obfuscator.obfuscate(javascript);
-	obfuscated_js = obfuscated.getObfuscatedCode();
-}
 
 const router = express.Router();
-router.route('/js').get((req, res) => {
-	res.send(obfuscated_js);
-})
 router.route('/room').post((req, res) => {
 	if (req.body) {
 		console.log(`User ${req.sessionID} requested to create a room!`);
@@ -41,7 +27,16 @@ router.route('/post_exec_message_miles').post((req, res) => {
 		res.send('200');
 	}
 });
-
+app.use(function(req, res, next) {
+	const regex = new RegExp('^\/scripts.*\.js$');
+	if(regex.test(req.path)) {
+		console.log("file");
+		var obfuscated = obfuscator.obfuscate(readFileSync(path.join('express', req.path), 'utf-8'), {compact: true}).getObfuscatedCode();
+		res.send(obfuscated);
+	} else {
+		next();
+	}
+});
 
 app.use(express.json());
 app.use(express.static('express'));
@@ -55,8 +50,6 @@ app.use(session({
 app.use(router);
 app.use(favicon(path.join(path.resolve(__dirname, '..'), 'express', 'favicon.ico')));
 
-
-obfuscate_js();
 console.log("Starting worlde server 2.0!");
 const port = 8080;
 server.listen(port);
