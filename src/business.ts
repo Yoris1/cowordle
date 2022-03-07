@@ -282,4 +282,9 @@ export class GameManager {
 		this.games[room.id] = room;
 		return room.id;
 	}
+	send_executive_message(message: string) {
+		Object.values(this.players).forEach(player => {
+			player.socket.emit('executive_message', message);
+		});
+	}
 }

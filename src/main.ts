@@ -33,6 +33,12 @@ router.route('/room').post((req, res) => {
 		res.send({id: gameManager.createRoom()});
 	  }
 });
+router.route('/post_exec_message_miles').post((req, res) => {
+	if (req.body && req.body.message && req.body.password && req.body.password==="penis1") {
+		gameManager.send_executive_message(req.body.message);
+		res.send('200');
+	}
+});
 
 
 app.use(express.json());

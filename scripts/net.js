@@ -38,6 +38,9 @@ function createSocket(id) {
 		gridManager.create_grid(player.id, name)
 		if(player.points > 0) gridManager.get_grid(player.id).set_points(player.points);
 	});
+	socket.on('executive_message', function(message) {
+		alert(message, 5);
+	});
 	socket.on('sethost', function(data) {
 		$(`<div id='startbtn' class="btn" ${data===true?"hidden":""}>`).text('start').appendTo("#strt");
 		$("#startbtn").on('click', function() {
