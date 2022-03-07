@@ -1,10 +1,12 @@
 import { readdirSync, readFileSync } from "fs";
+import path = require("path");
 import { GameManager } from "./business";
 
 const http = require('http');
 const express = require('express');
 const session = require('express-session');
 const obfuscator = require('javascript-obfuscator');
+const favicon = require('serve-favicon');
 
 const app = express();
 const server = http.createServer(app);
@@ -51,6 +53,7 @@ app.use(session({
 	cookie: { secure: false },
 }));
 app.use(router);
+app.use(favicon(path.join(path.resolve(__dirname, '..'), 'express', 'favicon.ico')));
 
 
 obfuscate_js();
