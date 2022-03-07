@@ -91,11 +91,13 @@ class Game {
 	removePlayer(player: Player) {
 		console.log("If people complain about players getting removed its prolly this");
 		this.players.splice(this.players.indexOf(player), 1);
-		if(this.host == player && this.players.length > 0) {
-			this.host = this.players[0];
-			this.host.socket.emit('sethost', this.isStarted);
-		} else
-			this.host = undefined;
+		if(this.host == player) {
+			if(this.players.length > 0) {
+				this.host = this.players[0];
+				this.host.socket.emit('sethost', this.isStarted);
+			}
+			else this.host = undefined;
+		} 
 		this.players.forEach(p => {
 			p.socket.emit('remove_player', player.id);
 		})
