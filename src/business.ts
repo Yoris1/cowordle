@@ -112,6 +112,7 @@ class Game {
 	
 	endRound() {
 		console.log("Ending round!! Need to reset state and send all the players the points");
+		this.stats.wordle_played();
 		var playerPoints = [];
 		this.players.forEach(player => {
 			var latestPoints = this.maxGuesses- (player.guesses.length-1) ;
@@ -179,7 +180,6 @@ class Game {
 		}
 	}
 	begin_game() : void {
-		this.stats.wordle_start();
 		this.rollWord()
 		this.isStarted = true;
 		this.players.forEach(element => {

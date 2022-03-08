@@ -6,7 +6,7 @@ export class StatsTracker {
 	public room_creation(): void {
 		this.increase_counter("rooms_created");
 	}
-	public wordle_start(): void {
+	public wordle_played(): void {
 		this.increase_counter("wordles_played");
 	}
 	public visit(): void {
