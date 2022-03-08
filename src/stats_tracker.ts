@@ -15,7 +15,10 @@ export class StatsTracker {
 	public get_count(name: string) {
 		return this.cache[name];
 	}
-	
+	public get_uptime() {
+		return Date.now() - this.server_start_date.getTime();
+	}
+
 	private increase_counter(name: string): void {
 		this.db.findOne({name: name}, (err, doc) => {
 			if(!doc) {
@@ -53,9 +56,11 @@ export class StatsTracker {
 		console.log(`total visitors: ${this.get_count("visit")}`)
 		console.log(`total rooms created: ${this.get_count("rooms_created")}`)
 	}
+	server_start_date: Date;
 	constructor() {
 		this.db = new nedb({filename: "./stats.db", autoload: true, timestampData: true});
 		var date = new Date();
+		this.server_start_date = date;
 		var human_readable_date = `${date.getHours()}:${date.getMinutes()} ${date.getDate()}/${date.getMonth()}/${date.getFullYear()}`
 		console.log(`Stats tracker created at ${date.getTime()} or ${human_readable_date}`);
 		this.increase_counter("restarts");
