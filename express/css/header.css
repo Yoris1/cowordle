@@ -13,7 +13,7 @@
 	padding: 0 0 0 0;
 	margin: 0px 0px 5px 0px;
 	text-align: center;
-	font-size: var(subtitle_font_size);
+	font-size: var(--subtitle_font_size);
 }
 #separator {
 	width: 100%;
