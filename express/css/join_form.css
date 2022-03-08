@@ -23,7 +23,7 @@
 	background-color: var(--guess_correct);
 	text-align: center;
 	vertical-align: middle;
-	font-size: 3em;
+	font-size: var(--button-font-size);
 	margin-bottom: 0;
 }
 #create {
@@ -31,7 +31,7 @@
 }
 
 #room_or {
-	font-size: 3em;
+	font-size: var(--button-font-size);
 	text-align: center;
 	margin: 0 0 0 0;
 	margin-bottom: 0;
@@ -51,7 +51,7 @@
 	height: 1.3858em;
 	margin-right: 1.5px;
 	margin-left: 1.5px;
-	font-size: 2em;
+	font-size: var(--username_font_size);
 	border-radius: var(--border_radius);
 	text-align: center;
 }
@@ -66,7 +66,7 @@
 }
 #invited {
 	color: var(--foreground_alt);
-	font-size: 1.7em;
+	font-size: calc(var(--button-font-size)*var(--invited_font_scale));
 	text-align: center;
 	margin: 0 0 10px 0;
 }

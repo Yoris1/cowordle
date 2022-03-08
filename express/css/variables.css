@@ -24,4 +24,15 @@
 	--grid_outline_used: rgba(0, 0, 0, 0);
 	
 	--border_radius: 8px;
+
+	--alert_font_size: 30px;
+	--boardname_font_size: 2em; 
+	--grid_entry_font_size: 3em;
+
+	--title_font_size: 50px;
+	--subtitle_font_size: 19px;
+
+	--button-font-size: 3em;
+	--invited_font_scale: 0.566;
+	--username_font_size: 2em;
 }

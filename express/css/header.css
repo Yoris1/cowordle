@@ -3,7 +3,7 @@
 	display: block;
 	text-decoration: none;
 	color: var(--foreground);
-	font-size: 50px;
+	font-size: var(--title_font_size);
 	padding: 0 0 0 0;
 	margin: -10px 0px 0px 0px;
 }
@@ -13,6 +13,7 @@
 	padding: 0 0 0 0;
 	margin: 0px 0px 5px 0px;
 	text-align: center;
+	font-size: var(subtitle_font_size);
 }
 #separator {
 	width: 100%;

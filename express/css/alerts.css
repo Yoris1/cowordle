@@ -1,5 +1,5 @@
 #alertbox {
-	font-size: 30px;
+	font-size: var(--alert_font_size);
 	line-height: 80px;
 	vertical-align: middle;
 	height: 80px;
