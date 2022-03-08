@@ -7,7 +7,6 @@ import { StatsTracker } from "./stats_tracker";
 
 const http = require('http');
 const express = require('express');
-const session = require('express-session');
 const obfuscator = require('javascript-obfuscator');
 const favicon = require('serve-favicon');
 
@@ -20,7 +19,7 @@ var gameManager : GameManager = new GameManager(io, stats);
 const router = express.Router();
 router.route('/room').post((req, res) => {
 	if (req.body) {
-		console.log(`User ${req.sessionID} requested to create a room!`);
+		console.log(`${req.ip} requested to create a room!`);
 		res.send({id: gameManager.createRoom()});
 	  }
 });
@@ -60,12 +59,6 @@ app.use(function(req, res, next) {
 app.use(express.json());
 app.use(express.static('express'));
 app.use(express.urlencoded()); // to decode request bodies
-app.use(session({
-	secret: 'aslkdhjasldf22346347',
-	resave: false,
-	saveUninitialized: true,
-	cookie: { secure: false },
-}));
 app.use(router);
 app.use(favicon(path.join(path.resolve(__dirname, '..'), 'express', 'favicon.ico')));
 
