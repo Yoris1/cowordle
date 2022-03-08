@@ -43,7 +43,8 @@ app.use(function(req, res, next) {
 	const regex = new RegExp('^\/scripts.*\.js$');
 	if(regex.test(req.path) && obfuscate === true) {
 		console.log("file");
-		var obfuscated = obfuscator.obfuscate(readFileSync(path.join('express', req.path), 'utf-8'), {compact: true}).getObfuscatedCode();
+		var obfuscated = obfuscator.obfuscate(readFileSync(path.join('express', req.path), 'utf-8'), {compact: false, log: false, disableConsoleOutput: true, controlFlowFlattening: true}).getObfuscatedCode();
+		res.set('Content-Type', 'text/javascript');
 		res.send(obfuscated);
 	} else {
 		next();
