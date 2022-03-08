@@ -10,6 +10,7 @@ class Name {
 		}
 	}
 	type(letter) {
+		if(this.allow_input !== true) return;
 		letter = letter.toLowerCase();
 		if(letter == " ") letter = "_";
 		if(!this.allowed_name_letters.includes(letter)) return;
@@ -60,7 +61,11 @@ class Name {
 		this.letters.forEach(letter => {str += letter});
 		return str;
 	}
+	toggle_input(value) {
+		this.allow_input = value;
+	}
 	constructor() {
+		this.allow_input = true;
 		this.allowed_name_letters = "qwertyuiopasdfghjklzxcvbnm 1234567890_";
 		this.letters = [];
 		this.elements = [];

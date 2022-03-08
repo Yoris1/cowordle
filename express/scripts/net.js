@@ -13,6 +13,7 @@ function send_typing_status(status) {
 	socket.emit('typing', status);
 }
 function createSocket(id) {
+	userName.toggle_input(false);
 	socket = io(window.location.href);
 	socket.on('guess', function(data) {
 		gridManager.get_grid(data.id).set_guess(data.guess_id, data.text);
