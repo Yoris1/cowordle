@@ -3,6 +3,7 @@ var obfuscate = true;
 import { readdirSync, readFileSync } from "fs";
 import path = require("path");
 import { GameManager } from "./business";
+import { StatsTracker } from "./stats_tracker";
 
 const http = require('http');
 const express = require('express');
@@ -13,8 +14,8 @@ const favicon = require('serve-favicon');
 const app = express();
 const server = http.createServer(app);
 const io = require('socket.io')(server);
-var gameManager : GameManager = new GameManager(io);
-
+var stats: StatsTracker = new StatsTracker();
+var gameManager : GameManager = new GameManager(io, stats);
 
 const router = express.Router();
 router.route('/room').post((req, res) => {
@@ -38,6 +39,12 @@ app.use(function(req, res, next) {
 	} else {
 		next();
 	}
+});
+app.use(function(req, res, next) {
+	if(req.path == '/') {
+		stats.visit();
+	}
+	next();
 });
 
 app.use(express.json());

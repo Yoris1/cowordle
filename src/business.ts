@@ -3,6 +3,7 @@ import path = require('path');
 import { Server, Socket } from "socket.io";
 import { uniqueNamesGenerator, animals, colors } from "unique-names-generator";
 import escape = require('escape-html');
+import { StatsTracker } from "./stats_tracker";
 
 
 const nanoid = require('nanoid');
@@ -178,6 +179,7 @@ class Game {
 		}
 	}
 	begin_game() : void {
+		this.stats.wordle_start();
 		this.rollWord()
 		this.isStarted = true;
 		this.players.forEach(element => {
@@ -189,7 +191,9 @@ class Game {
 			this.begin_game();
 		}
 	}
-	constructor(wordlist: {[key: number]: string[]}, wordlist_winning: {[key: number]: string[]}) {
+	stats: StatsTracker;
+	constructor(wordlist: {[key: number]: string[]}, wordlist_winning: {[key: number]: string[]}, stats: StatsTracker) {
+		this.stats = stats;
 		this.isStarted = false;
 		this.id = generateId();
 		this.guessLength = 5;
@@ -215,12 +219,14 @@ class Player {
 };
 
 export class GameManager {
+	stats: StatsTracker;
 	games :{ [key: string]: Game } = {};
 	players :{[key: string]: Player} = {};
 	wordlists :{[key: number]: string[]} = {};
 	winning_wordlists :{[key: number]: string[]} = {};
 
-	constructor(socket: Server) {
+	constructor(socket: Server, stats: StatsTracker) {
+		this.stats = stats;
 		this.wordlists = this.createWordlists("dictionary.txt");
 		this.winning_wordlists = this.createWordlists("winning_words.txt");
 		this.games = {};
@@ -280,7 +286,8 @@ export class GameManager {
 		return wordlists;
 	}
 	createRoom() : string {
-		var room : Game = new Game(this.wordlists, this.winning_wordlists);
+		this.stats.room_creation();
+		var room : Game = new Game(this.wordlists, this.winning_wordlists, this.stats);
 		this.games[room.id] = room;
 		return room.id;
 	}
