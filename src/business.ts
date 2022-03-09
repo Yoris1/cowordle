@@ -160,7 +160,7 @@ class Game {
 			this.endRound(); 
 	}
 	guess(player: Player, guess: string) : void {
-		console.log("need to do validation here to avoid xss!");
+		console.log("replace escape with just checking if it's alphanumeric characters");
 		console.log(`Escaping ${guess} str to be ${escape(guess)}`);
 		guess = escape(guess);
 		player.guesses.push(guess);
