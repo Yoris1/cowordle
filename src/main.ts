@@ -5,13 +5,22 @@ import path = require("path");
 import { GameManager } from "./business";
 import { StatsTracker } from "./stats_tracker";
 
-const http = require('http');
+const https = require('https');
 const express = require('express');
 const obfuscator = require('javascript-obfuscator');
 const favicon = require('serve-favicon');
 
+var https_credentials = {};
+try {
+	https_credentials['key']= readFileSync('./certificates/privkey.pem')
+	https_credentials['cert']= readFileSync('./certificates/fullchain.pem')
+	https_credentials['ca']= readFileSync('./certificates/chain.pem') // ocsp stapling
+} catch(err) {
+	console.warn(err);
+}
+
 const app = express();
-const server = http.createServer(app);
+const server = https.createServer(https_credentials, app);
 const io = require('socket.io')(server);
 var stats: StatsTracker = new StatsTracker();
 var gameManager : GameManager = new GameManager(io, stats);
