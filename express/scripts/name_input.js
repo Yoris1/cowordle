@@ -1,6 +1,6 @@
 class Name {
 	color_placeholder = false;
-	username_correct = "cat_coffees"
+	username_correct = "catppuccino"
 	update_letter_colors() {
 		if(!this.letters) return;
 		var res = compare(this.getName(), this.username_correct, false);
