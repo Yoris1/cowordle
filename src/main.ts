@@ -73,6 +73,7 @@ app.use(function(req, res, next) {
 	const regex = new RegExp('^\/scripts.*\.js$');
 	if(regex.test(req.path) && process.env.OBFUSCATE_JS === 'true') {
 		res.set('Content-Type', 'text/javascript');
+		res.setHeader('Cache-Control', 'public, max-age=7200');
 		res.send(load_or_cache(path.join('express', req.path)));
 	} else {
 		next();
