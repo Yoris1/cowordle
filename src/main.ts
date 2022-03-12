@@ -6,7 +6,6 @@ import { GameManager } from "./business";
 import { StatsTracker } from "./stats_tracker";
 
 const https = require('https');
-const http = require('http');
 const express = require('express');
 const obfuscator = require('javascript-obfuscator');
 const favicon = require('serve-favicon');
@@ -76,7 +75,9 @@ console.log("Starting worlde server 2.0!");
 const port = 8080;
 server.listen(port);
 
-const httpApp = express();
-httpApp.all('*', (req, res) => res.redirect(300, `https://${process.env.DOMAIN}`));
-const httpServer = http.createServer(httpApp);
-httpServer.listen(8081);
+
+const http = require('http');
+http.createServer(function(req, res) {
+	res.writeHead(301, {"Location": `https://${process.env.DOMAIN}/`});
+	res.end();
+} ).listen(8081);
