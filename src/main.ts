@@ -6,6 +6,7 @@ import { GameManager } from "./business";
 import { StatsTracker } from "./stats_tracker";
 
 const https = require('https');
+const http = require('http');
 const express = require('express');
 const obfuscator = require('javascript-obfuscator');
 const favicon = require('serve-favicon');
@@ -74,3 +75,8 @@ app.use(favicon(path.join(path.resolve(__dirname, '..'), 'express', 'favicon.ico
 console.log("Starting worlde server 2.0!");
 const port = 8080;
 server.listen(port);
+
+const httpApp = express();
+httpApp.all('*', (req, res) => res.redirect(300, `https://${process.env.DOMAIN}`));
+const httpServer = http.createServer(httpApp);
+httpServer.listen(8081);
