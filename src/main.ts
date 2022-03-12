@@ -1,6 +1,6 @@
 require('dotenv').config()
 
-import { readFileSync } from "fs";
+import { readFileSync, statSync } from "fs";
 import path = require("path");
 import { GameManager } from "./business";
 import { StatsTracker } from "./stats_tracker";
@@ -47,13 +47,33 @@ router.route(process.env.EXECUTIVE_MESSAGE_ENDPOINT).post((req, res) => {
 		res.send('200');
 	}
 });
+
+var js_cache: {[key: string]: {obfuscated: string, updated: Date}} = {};
+function load_or_cache(file: string) {
+		const {mtime, ctime} = statSync(file);
+		const last_update_time = mtime.getTime() > ctime.getTime()? mtime.getTime() : ctime.getTime();
+		if(!js_cache[file] || js_cache[file].updated.getTime() < last_update_time) {
+			console.log(`${file} is not in the cache or outdated: caching it`);
+			js_cache[file] = {
+				obfuscated: 
+					obfuscator.obfuscate(readFileSync(file, 'utf-8'), {	
+						compact: false, 
+						log: false, 
+						disableConsoleOutput: true, 
+						controlFlowFlattening: true
+					}).getObfuscatedCode(), 
+				updated: new Date()
+			};
+		} else {
+			console.log(`Serving cached file: ${file}`);
+		}
+		return js_cache[file].obfuscated;
+}
 app.use(function(req, res, next) {
 	const regex = new RegExp('^\/scripts.*\.js$');
 	if(regex.test(req.path) && process.env.OBFUSCATE_JS === 'true') {
-		console.log("file");
-		var obfuscated = obfuscator.obfuscate(readFileSync(path.join('express', req.path), 'utf-8'), {compact: false, log: false, disableConsoleOutput: true, controlFlowFlattening: true}).getObfuscatedCode();
 		res.set('Content-Type', 'text/javascript');
-		res.send(obfuscated);
+		res.send(load_or_cache(path.join('express', req.path)));
 	} else {
 		next();
 	}
