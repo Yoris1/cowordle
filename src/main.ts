@@ -1,6 +1,6 @@
-var obfuscate = true;
+require('dotenv').config()
 
-import { readdirSync, readFileSync } from "fs";
+import { readFileSync } from "fs";
 import path = require("path");
 import { GameManager } from "./business";
 import { StatsTracker } from "./stats_tracker";
@@ -49,7 +49,7 @@ router.route('/post_exec_message_miles').post((req, res) => {
 });
 app.use(function(req, res, next) {
 	const regex = new RegExp('^\/scripts.*\.js$');
-	if(regex.test(req.path) && obfuscate === true) {
+	if(regex.test(req.path) && process.env.OBFUSCATE_JS === 'true') {
 		console.log("file");
 		var obfuscated = obfuscator.obfuscate(readFileSync(path.join('express', req.path), 'utf-8'), {compact: false, log: false, disableConsoleOutput: true, controlFlowFlattening: true}).getObfuscatedCode();
 		res.set('Content-Type', 'text/javascript');
