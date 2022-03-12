@@ -1,2 +1,2 @@
 source .env
-curl -d "message=server reboot in 30 mins" -d "password=${EXECUTIVE_MESSAGE_PASSWORD}" -X POST http://localhost:8080/post_exec_message_miles
+curl -d "$1" -d "password=${EXECUTIVE_MESSAGE_PASSWORD}" -X POST https://${DOMAIN}/${EXECUTIVE_MESSAGE_ENDPOINT}
