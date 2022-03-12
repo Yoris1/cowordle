@@ -38,7 +38,7 @@ body {
 	--username_font_size: var(--font_small);
 
 
-	--title_font_size: 3.125em;
+	--title_font_size: var(--font_large);
 	--subtitle_font_size: 1.2em;
 	--invited_font_scale: 0.566;
 }
