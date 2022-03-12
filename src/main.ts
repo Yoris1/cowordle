@@ -78,6 +78,7 @@ server.listen(port);
 
 const http = require('http');
 http.createServer(function(req, res) {
+	console.log("Redirecting user to https site!");
 	res.writeHead(301, {"Location": `https://${process.env.DOMAIN}/`});
 	res.end();
 } ).listen(8081);
