@@ -1,6 +1,17 @@
 body {
 	font-size: 16px;
 }
+
+:root { 
+	--keyboard_font_size: 30px;
+	--keyboard_width: 600px;
+}
+@media screen and (orientation:portrait) {
+	:root {
+		--keyboard_width: vw;
+	}
+}
+
 :root { 
 	--background: #121212;
 	--foreground: white; 
@@ -9,9 +20,6 @@ body {
 	--keyboard_key_width: calc(100%/12);
 	--keyboard_long_width: calc(var(--keyboard_key_width)*1.55);
 	--keyboard_key_margin: calc(var(--keyboard_key_width)/12);
-	--keyboard_font_size: 30px;
-	--keyboard_width: 600px;
-	--keyboard_height: 200px;
 	--keyboard_color_key: #818384;
 	--keyboard_color_good: #538d4e;
 	--keyboard_color_bad: #3a3a3c;
