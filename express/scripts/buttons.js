@@ -13,13 +13,9 @@ $(document).ready(function(){
 	});
 	$('#makeinvite').on('click', function(event) {
 		event.preventDefault();
-		var old_text = $(this).text();
-		$(this).text("copied to clipboard");
-		setTimeout(() => {
-			$(this).text(old_text)
-		}, 500);
-		var invite = document.location.origin  + "/?join=" + $("#current_room_id").text() ; 
+		var invite = document.location.origin  + "/?join=" + $("#current_room_id").text();
 		navigator.clipboard.writeText(invite);
+		alert("copied to clipboard!");
 		console.log(`Making an invite. link: ${invite}`);
 	})
 });

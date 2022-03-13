@@ -9,13 +9,27 @@ body {
 	display: flex;
 	justify-content: center;
 }
+#strt {
+	width: 10%;
+	min-width: 100px;
+	display: block;
+	position: absolute;
+	right: 1%;
+	top: 0.5%;
+}
+#head {
+	width: 50%;
+	margin-left: auto;
+	margin-right: auto;
+}
 #roominfo {
 	text-align: left;
 	position: absolute;
-	right: 1%;
-	bottom: 2%;
-	width: 400px;
-	z-index: -10;
+	left: 1%;
+	top: 0.5%;
+	min-width: 100px;
+	width: 10%;
+	z-index: 10;
 }
 .unselectable {
     -webkit-touch-callout: none;

@@ -49,12 +49,23 @@
 	<div id="alert_container">
 
 	</div>
-	<a href="./" id="title">
-		yoris' co-wordle
-	</a>
-	<h3 id="subtitle">
-		a multiplayer word guessing game
-	</h3>
+	<div id="head">
+		<a href="./" id="title">
+			yoris' co-wordle
+		</a>
+		<h3 id="subtitle">
+			a multiplayer word guessing game
+		</h3>
+	</div>
+	
+	<div id="strt">
+		<div id='startbtn' class="btn" hidden>start</div>
+	</div>
+	<div id="roominfo" hidden>
+		<div id='makeinvite' class="unselectable btn">invite</div>
+		<span id='current_room_id' hidden></span>
+	</div>
+
 	<div id="separator"></div>
 	<br> <br>
 	
@@ -70,14 +81,8 @@
 	</div>
 
 	<div id="gameboard" hidden> </div>
-	<div id="keyboard" hidden></div>
-	<div id="roominfo" hidden>
-		<div id="strt">
-			<div id='startbtn' class="btn" hidden>start</div>
-		</div>
-		<h1 >play with your friends! <span id='current_room_id' hidden></span></h1>
-		<h1 id="makeinvite" class="unselectable">click here to get invite</h1>
-	</div>
+
+	<div id="keyboard"></div>
 </body>
 
 </html>
