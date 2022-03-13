@@ -31,7 +31,7 @@ function verifyWord() {
 }
 function presskey(letter) {
 	if(is_started !== true)  {
-		if(letter == "Backspace")
+		if(letter.toLowerCase() == "backspace")
 			userName.backspace();
 		else
 			userName.type(letter);
