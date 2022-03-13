@@ -50,3 +50,9 @@ body {
 	--subtitle_font_size: 1.2em;
 	--invited_font_scale: 0.566;
 }
+@media only screen and (max-width: 700px) {
+	:root {
+		--title_font_size: 1.3em;
+		--subtitle_font_size: 0.6em;
+	}
+}
