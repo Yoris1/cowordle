@@ -191,13 +191,15 @@ class Grid {
 		this.current_line = 0;
 
 		//generate matrix
-		this.container = $(`<div class="grid">`).appendTo($("#gameboard")); // grid div
-		this.name = $(`<p class="boardname">`).appendTo(this.container);
-		this.points = $(`<p class="points">`).appendTo(this.container);
+		this.container = $(`<div class="grid_container">`).appendTo($("#gameboard"));
+		this.grid_container = $(`<div class="grid">`).appendTo(this.container); // grid div
+		this.header = $(`<div class="board_title">`).appendTo(this.container);
+		this.name = $(`<p class="boardname">`).appendTo(this.header);
+		this.points = $(`<p class="points">`).appendTo(this.header);
 		this.matrix = []; // all the text elements
 
 		for(var y = 0; y < height; y++) {
-			var row = $(`<div class=grid_row>`).appendTo(this.container);
+			var row = $(`<div class=grid_row>`).appendTo(this.grid_container);
 			var entries = [];
 			for(var x = 0; x < width; x++) {
 				var entry = $(`<div class=grid_entry>`).appendTo(row);	
