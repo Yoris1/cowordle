@@ -1,4 +1,5 @@
 #keyboard {
+	display: none;
 	text-align: center;
 	width: var(--keyboard_width);
 	aspect-ratio: 3/1;
@@ -7,6 +8,11 @@
 	right: 0;
 	left: 0;
 	bottom: 2%;
+}
+@media screen and (orientation:portrait) {
+	#keyboard {
+		display: block;
+	}
 }
 .keyboard_row {
 	margin-top: var(--keyboard_key_margin);
