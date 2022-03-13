@@ -21,7 +21,7 @@ $(document).ready(function() {
 		for(var i = 0; i < room.length; i++) {
 			var color = random_color();
 			console.log(color);
-			$(`<div class="grid_entry ${color}">`).text(room[i]).appendTo($("#room_id"))
+			$(`<div class="room_code ${color}">`).text(room[i]).appendTo($("#room_id"))
 		}
 		$('#create_or_join').text("game id:");
 	}
