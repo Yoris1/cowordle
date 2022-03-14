@@ -42,7 +42,7 @@ body {
 	--alert_font_size: var(--font_small);
 	--boardname_font_size: var(--font_small); 
 	--grid_entry_font_size: var(--font_large);
-	--button-font-size: var(--font_large);
+	--button-font-size: 1.4em;
 	--username_font_size: var(--font_small);
 
 
