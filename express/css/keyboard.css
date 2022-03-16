@@ -1,5 +1,4 @@
 #keyboard {
-	display: none;
 	text-align: center;
 	width: var(--keyboard_width);
 	aspect-ratio: 3/1;
