@@ -10,13 +10,41 @@
 	width: 100%;
 }
 .grid_container {
-	margin-right: 1%;
-	margin-left: 1%;
-	height: 100%;
-	max-width: 100%;
+	margin-right: auto;
+	margin-left: auto;
 	aspect-ratio: 5/6;
 	background-color: pink;
+	height: 40%;
+	max-width: 60%;
 }
+
+.grid_container:only-child {
+	height: 100%;
+	max-width: 100%;
+	background-color: red;
+}
+
+.grid_container:first-child:nth-last-child(2),
+.grid_container:first-child:nth-last-child(2) ~ .grid_container {
+	height: 100%;
+	max-width: 45%;
+}
+
+.grid_container:first-child:nth-last-child(3),
+.grid_container:first-child:nth-last-child(3) ~ .grid_container {
+	height: 100%;
+	max-width: 33.3333%;
+	background-color: indigo;
+}
+
+.grid_container:first-child:nth-last-child(4),
+.grid_container:first-child:nth-last-child(4) ~ .grid_container {
+	height: 100%;
+	max-width: 50%;
+	background-color: blue;
+}
+
+
 .board_title {
 	height: 3em;
 	text-align: center;
