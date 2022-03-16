@@ -16,6 +16,6 @@ function joinRoom(roomid) {
 	$('#roominfo').show();
 	$('#gameboard').show();
 
-	$('#current_room_id').text(roomid);
+	room_id = roomid;
 	createSocket(roomid);
 }

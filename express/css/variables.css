@@ -54,5 +54,6 @@ body {
 	:root {
 		--title_font_size: 1.3em;
 		--subtitle_font_size: 0.6em;
+		--button-font-size: 0.7em;
 	}
 }

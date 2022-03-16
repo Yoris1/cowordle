@@ -3,15 +3,14 @@
 	text-align: center;
 	width: var(--keyboard_width);
 	aspect-ratio: 3/1;
-	position: absolute;
-	margin: 0 auto 0 auto;
-	right: 0;
-	left: 0;
-	bottom: 2%;
+	margin-top: auto;
+	margin-bottom: 1%;
+	margin-left: auto;
+	margin-right: auto;
 }
 @media screen and (orientation:portrait) {
 	#keyboard {
-		display: block;
+		width: 100%;
 	}
 }
 .keyboard_row {

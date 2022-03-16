@@ -1,3 +1,4 @@
+var room_id = 0;
 $(document).ready(function(){
 	$('#create').click(function(event) {
 		event.preventDefault();
@@ -13,7 +14,7 @@ $(document).ready(function(){
 	});
 	$('#makeinvite').on('click', function(event) {
 		event.preventDefault();
-		var invite = document.location.origin  + "/?join=" + $("#current_room_id").text();
+		var invite = `${document.location.origin}/?join=${room_id}`;
 		navigator.clipboard.writeText(invite);
 		alert("copied to clipboard!");
 		console.log(`Making an invite. link: ${invite}`);

@@ -46,38 +46,36 @@
 </head>
 
 <body>
-
-	<div class="header">
-		<div class="side_button">
-			<div id="startbtn" class="side_button_centered">start</div>
-		</div>
-		<div id="header_center">
-			<div id="title">yoris' co-wordle</div>
-			<div id="subtitle">a multiplayer word guessing game </div>
-		</div>
-		<div class="side_button">
-			<div class="side_button_centered">get invite link</div>
-		</div>
-	</div>
-
-
 	<div id="alert_container"></div>
 
+	<div id="site_flexbox">
+		<div class="header">
+			<div class="side_button">
+				<div id="startbtn" class="side_button_centered">start</div>
+			</div>
+			<div id="header_center">
+				<div id="title">yoris' co-wordle</div>
+				<div id="subtitle">a multiplayer word guessing game </div>
+			</div>
+			<div class="side_button">
+				<div class="side_button_centered" id="makeinvite">get invite link</div>
+			</div>
+		</div>
+		<div id="site_center">
+			<div id = "join_form">
+				<div id="name"></div>
+				<p id="invited"></p>
+				<div id="room_id"></div>
+				<div id="join" hidden class="btn">join game</div>
+				<p id="room_or" hidden>or</p>
+				<div id="create" class="btn">create room</div>
+			</div>
+			<div id="gameboard" hidden></div>
+		</div>
+		<div id="keyboard" hidden></div>
 
 
-	<br><br>
-	
-	<div id = "join_form">
-		<div id="name"></div>
-		<p id="invited"></p>
-		<div id="room_id"></div>
-		<div id="join" hidden class="btn">join game</div>
-		<p id="room_or" hidden>or</p>
-		<div id="create" class="btn">create room</div>
 	</div>
-
-	<div id="gameboard" hidden></div>
-	<div id="keyboard" hidden></div>
 </body>
 
 </html>
