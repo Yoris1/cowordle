@@ -14,6 +14,7 @@ Node.JS backend written in typescript.
 JQuery+html+css front end.
 
 HTTPS server runs on port 8080 and the HTTP one runs on port 8081.
+
 HTTPS Certificates are read from `./certificates`. 
 
 ## Wordlists
@@ -27,7 +28,7 @@ https://raw.githubusercontent.com/first20hours/google-10000-english/master/googl
 
 https://www.npmjs.com/package/word-list
 
-winning wordslist: 
+winning wordlist: 
 
 https://raw.githubusercontent.com/first20hours/google-10000-english/master/google-10000-english-usa-no-swears-medium.txt
 
