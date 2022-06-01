@@ -15,3 +15,19 @@ JQuery+html+css front end.
 
 HTTPS server runs on port 8080 and the HTTP one runs on port 8081.
 HTTPS Certificates are read from `./certificates`. 
+
+## Wordlists
+wordlist assembled from:
+
+https://github.com/dwyl/english-words/ -> https://raw.githubusercontent.com/dwyl/english-words/master/words_alpha.txt
+
+http://www-personal.umich.edu/~jlawler/wordlist.html
+
+https://raw.githubusercontent.com/first20hours/google-10000-english/master/google-10000-english-usa-no-swears-medium.txt
+
+https://www.npmjs.com/package/word-list
+
+winning wordslist: 
+
+https://raw.githubusercontent.com/first20hours/google-10000-english/master/google-10000-english-usa-no-swears-medium.txt
+
