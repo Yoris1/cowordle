@@ -7,7 +7,7 @@ It's a multiplayer version of the hit word guessing game [wordle](https://www.ny
 I wanted to play wordle with my friends, but all the options online were rewarding people based on the speed they solved it in instead of the guess count (which imo is a core mechanic of the game). So I made my own version where the points you get are based on how few guesses you use. 
 
 ## Features
-It is far from being a feature complete multiplayer game. It's my first attempt at making one, I tried to make the experience of playing it with friends as simple as it is in [skribbl.io](https://skribbl.io/) and i think i managed to do that, as all of my friends could join fairly effortlessly. But there is no multiplayer room discovery, moderation or anything alike.
+It is far from being a feature complete multiplayer game. It's my first attempt at making one, I tried to make the experience of playing it with friends as simple as it is in [skribbl.io](https://skribbl.io/) and i think i managed to do that, as all of my friends could join fairly effortlessly. But there is no multiplayer room discovery, moderation or phone support.
 ## Tech
 Node.JS backend written in typescript.
 
